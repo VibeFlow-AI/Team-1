@@ -13,7 +13,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  register: (email: string, password: string, role: 'STUDENT' | 'MENTOR') => Promise<{ success: boolean; error?: string }>;
+  register: (email: string, password: string, role: 'STUDENT' | 'MENTOR') => Promise<{ success: boolean; error?: string; user?: User }>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
 }
@@ -72,7 +72,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await response.json();
 
       if (response.ok) {
-        return { success: true };
+        // Set user state after successful registration
+        setUser(data.user);
+        return { success: true, user: data.user };
       } else {
         return { success: false, error: data.error };
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 export default function MentorOnboardingPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [data, setData] = useState({
     fullName: '',
@@ -25,8 +26,20 @@ export default function MentorOnboardingPage() {
   const { user } = useAuth();
   const router = useRouter();
 
+  // Check if user already has a profile
+  useEffect(() => {
+    if (user && user.hasProfile) {
+      router.push('/dashboard/mentor');
+    }
+  }, [user, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isSubmitted || isLoading) {
+      return; // Prevent multiple submissions
+    }
+    
     setIsLoading(true);
     setError('');
 
@@ -38,7 +51,9 @@ export default function MentorOnboardingPage() {
       });
 
       if (response.ok) {
-        router.push('/dashboard');
+        setIsSubmitted(true);
+        // Force a page reload to update auth state
+        window.location.href = '/dashboard/mentor';
       } else {
         const result = await response.json();
         setError(result.error || 'Failed to save profile');
@@ -56,6 +71,17 @@ export default function MentorOnboardingPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Access Denied</h1>
           <p className="text-gray-600">This page is only for mentors.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Redirecting to dashboard...</p>
         </div>
       </div>
     );
@@ -175,7 +201,7 @@ export default function MentorOnboardingPage() {
             
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || isSubmitted}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
             >
               {isLoading ? 'Saving...' : 'Complete Profile'}

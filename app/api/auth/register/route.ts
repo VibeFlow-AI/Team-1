@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createUser } from '@/lib/auth';
+import { createUser, generateToken } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
@@ -29,14 +29,35 @@ export async function POST(request: NextRequest) {
     // Create user
     const user = await createUser(email, password, role);
 
-    return NextResponse.json(
+    // Generate JWT token
+    const token = generateToken({
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+    });
+
+    // Set HTTP-only cookie and return response
+    const response = NextResponse.json(
       { 
         message: 'User registered successfully',
-        userId: user.id,
-        role: user.role 
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+          hasProfile: false,
+        }
       },
       { status: 201 }
     );
+
+    response.cookies.set('auth-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+    });
+
+    return response;
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json(

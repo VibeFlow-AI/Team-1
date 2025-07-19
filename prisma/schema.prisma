@@ -54,6 +54,7 @@ model StudentProfile {
   currentYear           Int
   skillLevels           Json    // Store as JSON: {subject: level}
   preferredLearningStyle LearningStyle
+  hasLearningDisabilities String? // YES or NO
   learningDisabilities  String? // Description if any
   
   createdAt             DateTime @default(now())

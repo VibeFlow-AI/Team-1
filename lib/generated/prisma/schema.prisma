@@ -50,11 +50,12 @@ model StudentProfile {
   school                String
 
   // Subject & Skill Assessment
-  subjectsOfInterest     String // Comma-separated subjects
-  currentYear            Int
-  skillLevels            Json // Store as JSON: {subject: level}
-  preferredLearningStyle LearningStyle
-  learningDisabilities   String? // Description if any
+  subjectsOfInterest      String // Comma-separated subjects
+  currentYear             Int
+  skillLevels             Json // Store as JSON: {subject: level}
+  preferredLearningStyle  LearningStyle
+  hasLearningDisabilities String? // YES or NO
+  learningDisabilities    String? // Description if any
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

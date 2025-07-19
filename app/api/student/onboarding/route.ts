@@ -18,6 +18,7 @@ const onboardingSchema = z.object({
   currentYear: z.number().min(1),
   skillLevels: z.record(z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED'])),
   preferredLearningStyle: z.enum(['VISUAL', 'HANDS_ON', 'THEORETICAL', 'MIXED']),
+  hasLearningDisabilities: z.enum(['YES', 'NO']).optional(),
   learningDisabilities: z.string().optional(),
 });
 
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
         currentYear: data.currentYear,
         skillLevels: data.skillLevels,
         preferredLearningStyle: data.preferredLearningStyle,
+        hasLearningDisabilities: data.hasLearningDisabilities,
         learningDisabilities: data.learningDisabilities,
       },
       create: {
@@ -71,6 +73,7 @@ export async function POST(request: NextRequest) {
         currentYear: data.currentYear,
         skillLevels: data.skillLevels,
         preferredLearningStyle: data.preferredLearningStyle,
+        hasLearningDisabilities: data.hasLearningDisabilities,
         learningDisabilities: data.learningDisabilities,
       },
     });

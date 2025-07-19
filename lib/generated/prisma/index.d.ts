@@ -2640,6 +2640,7 @@ export namespace Prisma {
     subjectsOfInterest: string | null
     currentYear: number | null
     preferredLearningStyle: $Enums.LearningStyle | null
+    hasLearningDisabilities: string | null
     learningDisabilities: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2656,6 +2657,7 @@ export namespace Prisma {
     subjectsOfInterest: string | null
     currentYear: number | null
     preferredLearningStyle: $Enums.LearningStyle | null
+    hasLearningDisabilities: string | null
     learningDisabilities: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2673,6 +2675,7 @@ export namespace Prisma {
     currentYear: number
     skillLevels: number
     preferredLearningStyle: number
+    hasLearningDisabilities: number
     learningDisabilities: number
     createdAt: number
     updatedAt: number
@@ -2701,6 +2704,7 @@ export namespace Prisma {
     subjectsOfInterest?: true
     currentYear?: true
     preferredLearningStyle?: true
+    hasLearningDisabilities?: true
     learningDisabilities?: true
     createdAt?: true
     updatedAt?: true
@@ -2717,6 +2721,7 @@ export namespace Prisma {
     subjectsOfInterest?: true
     currentYear?: true
     preferredLearningStyle?: true
+    hasLearningDisabilities?: true
     learningDisabilities?: true
     createdAt?: true
     updatedAt?: true
@@ -2734,6 +2739,7 @@ export namespace Prisma {
     currentYear?: true
     skillLevels?: true
     preferredLearningStyle?: true
+    hasLearningDisabilities?: true
     learningDisabilities?: true
     createdAt?: true
     updatedAt?: true
@@ -2838,6 +2844,7 @@ export namespace Prisma {
     currentYear: number
     skillLevels: JsonValue
     preferredLearningStyle: $Enums.LearningStyle
+    hasLearningDisabilities: string | null
     learningDisabilities: string | null
     createdAt: Date
     updatedAt: Date
@@ -2874,6 +2881,7 @@ export namespace Prisma {
     currentYear?: boolean
     skillLevels?: boolean
     preferredLearningStyle?: boolean
+    hasLearningDisabilities?: boolean
     learningDisabilities?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2892,6 +2900,7 @@ export namespace Prisma {
     currentYear?: boolean
     skillLevels?: boolean
     preferredLearningStyle?: boolean
+    hasLearningDisabilities?: boolean
     learningDisabilities?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2910,6 +2919,7 @@ export namespace Prisma {
     currentYear?: boolean
     skillLevels?: boolean
     preferredLearningStyle?: boolean
+    hasLearningDisabilities?: boolean
     learningDisabilities?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2928,12 +2938,13 @@ export namespace Prisma {
     currentYear?: boolean
     skillLevels?: boolean
     preferredLearningStyle?: boolean
+    hasLearningDisabilities?: boolean
     learningDisabilities?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "age" | "contactNumber" | "currentEducationLevel" | "school" | "subjectsOfInterest" | "currentYear" | "skillLevels" | "preferredLearningStyle" | "learningDisabilities" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+  export type StudentProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "age" | "contactNumber" | "currentEducationLevel" | "school" | "subjectsOfInterest" | "currentYear" | "skillLevels" | "preferredLearningStyle" | "hasLearningDisabilities" | "learningDisabilities" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
   export type StudentProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -2961,6 +2972,7 @@ export namespace Prisma {
       currentYear: number
       skillLevels: Prisma.JsonValue
       preferredLearningStyle: $Enums.LearningStyle
+      hasLearningDisabilities: string | null
       learningDisabilities: string | null
       createdAt: Date
       updatedAt: Date
@@ -3399,6 +3411,7 @@ export namespace Prisma {
     readonly currentYear: FieldRef<"StudentProfile", 'Int'>
     readonly skillLevels: FieldRef<"StudentProfile", 'Json'>
     readonly preferredLearningStyle: FieldRef<"StudentProfile", 'LearningStyle'>
+    readonly hasLearningDisabilities: FieldRef<"StudentProfile", 'String'>
     readonly learningDisabilities: FieldRef<"StudentProfile", 'String'>
     readonly createdAt: FieldRef<"StudentProfile", 'DateTime'>
     readonly updatedAt: FieldRef<"StudentProfile", 'DateTime'>
@@ -8301,6 +8314,7 @@ export namespace Prisma {
     currentYear: 'currentYear',
     skillLevels: 'skillLevels',
     preferredLearningStyle: 'preferredLearningStyle',
+    hasLearningDisabilities: 'hasLearningDisabilities',
     learningDisabilities: 'learningDisabilities',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -8575,6 +8589,7 @@ export namespace Prisma {
     currentYear?: IntFilter<"StudentProfile"> | number
     skillLevels?: JsonFilter<"StudentProfile">
     preferredLearningStyle?: EnumLearningStyleFilter<"StudentProfile"> | $Enums.LearningStyle
+    hasLearningDisabilities?: StringNullableFilter<"StudentProfile"> | string | null
     learningDisabilities?: StringNullableFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
@@ -8593,6 +8608,7 @@ export namespace Prisma {
     currentYear?: SortOrder
     skillLevels?: SortOrder
     preferredLearningStyle?: SortOrder
+    hasLearningDisabilities?: SortOrderInput | SortOrder
     learningDisabilities?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8614,6 +8630,7 @@ export namespace Prisma {
     currentYear?: IntFilter<"StudentProfile"> | number
     skillLevels?: JsonFilter<"StudentProfile">
     preferredLearningStyle?: EnumLearningStyleFilter<"StudentProfile"> | $Enums.LearningStyle
+    hasLearningDisabilities?: StringNullableFilter<"StudentProfile"> | string | null
     learningDisabilities?: StringNullableFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeFilter<"StudentProfile"> | Date | string
@@ -8632,6 +8649,7 @@ export namespace Prisma {
     currentYear?: SortOrder
     skillLevels?: SortOrder
     preferredLearningStyle?: SortOrder
+    hasLearningDisabilities?: SortOrderInput | SortOrder
     learningDisabilities?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8657,6 +8675,7 @@ export namespace Prisma {
     currentYear?: IntWithAggregatesFilter<"StudentProfile"> | number
     skillLevels?: JsonWithAggregatesFilter<"StudentProfile">
     preferredLearningStyle?: EnumLearningStyleWithAggregatesFilter<"StudentProfile"> | $Enums.LearningStyle
+    hasLearningDisabilities?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     learningDisabilities?: StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
@@ -9045,6 +9064,7 @@ export namespace Prisma {
     currentYear: number
     skillLevels: JsonNullValueInput | InputJsonValue
     preferredLearningStyle: $Enums.LearningStyle
+    hasLearningDisabilities?: string | null
     learningDisabilities?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9063,6 +9083,7 @@ export namespace Prisma {
     currentYear: number
     skillLevels: JsonNullValueInput | InputJsonValue
     preferredLearningStyle: $Enums.LearningStyle
+    hasLearningDisabilities?: string | null
     learningDisabilities?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9079,6 +9100,7 @@ export namespace Prisma {
     currentYear?: IntFieldUpdateOperationsInput | number
     skillLevels?: JsonNullValueInput | InputJsonValue
     preferredLearningStyle?: EnumLearningStyleFieldUpdateOperationsInput | $Enums.LearningStyle
+    hasLearningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     learningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9097,6 +9119,7 @@ export namespace Prisma {
     currentYear?: IntFieldUpdateOperationsInput | number
     skillLevels?: JsonNullValueInput | InputJsonValue
     preferredLearningStyle?: EnumLearningStyleFieldUpdateOperationsInput | $Enums.LearningStyle
+    hasLearningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     learningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9114,6 +9137,7 @@ export namespace Prisma {
     currentYear: number
     skillLevels: JsonNullValueInput | InputJsonValue
     preferredLearningStyle: $Enums.LearningStyle
+    hasLearningDisabilities?: string | null
     learningDisabilities?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9130,6 +9154,7 @@ export namespace Prisma {
     currentYear?: IntFieldUpdateOperationsInput | number
     skillLevels?: JsonNullValueInput | InputJsonValue
     preferredLearningStyle?: EnumLearningStyleFieldUpdateOperationsInput | $Enums.LearningStyle
+    hasLearningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     learningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9147,6 +9172,7 @@ export namespace Prisma {
     currentYear?: IntFieldUpdateOperationsInput | number
     skillLevels?: JsonNullValueInput | InputJsonValue
     preferredLearningStyle?: EnumLearningStyleFieldUpdateOperationsInput | $Enums.LearningStyle
+    hasLearningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     learningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9676,6 +9702,7 @@ export namespace Prisma {
     currentYear?: SortOrder
     skillLevels?: SortOrder
     preferredLearningStyle?: SortOrder
+    hasLearningDisabilities?: SortOrder
     learningDisabilities?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9697,6 +9724,7 @@ export namespace Prisma {
     subjectsOfInterest?: SortOrder
     currentYear?: SortOrder
     preferredLearningStyle?: SortOrder
+    hasLearningDisabilities?: SortOrder
     learningDisabilities?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9713,6 +9741,7 @@ export namespace Prisma {
     subjectsOfInterest?: SortOrder
     currentYear?: SortOrder
     preferredLearningStyle?: SortOrder
+    hasLearningDisabilities?: SortOrder
     learningDisabilities?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -10593,6 +10622,7 @@ export namespace Prisma {
     currentYear: number
     skillLevels: JsonNullValueInput | InputJsonValue
     preferredLearningStyle: $Enums.LearningStyle
+    hasLearningDisabilities?: string | null
     learningDisabilities?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10609,6 +10639,7 @@ export namespace Prisma {
     currentYear: number
     skillLevels: JsonNullValueInput | InputJsonValue
     preferredLearningStyle: $Enums.LearningStyle
+    hasLearningDisabilities?: string | null
     learningDisabilities?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10738,6 +10769,7 @@ export namespace Prisma {
     currentYear?: IntFieldUpdateOperationsInput | number
     skillLevels?: JsonNullValueInput | InputJsonValue
     preferredLearningStyle?: EnumLearningStyleFieldUpdateOperationsInput | $Enums.LearningStyle
+    hasLearningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     learningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10754,6 +10786,7 @@ export namespace Prisma {
     currentYear?: IntFieldUpdateOperationsInput | number
     skillLevels?: JsonNullValueInput | InputJsonValue
     preferredLearningStyle?: EnumLearningStyleFieldUpdateOperationsInput | $Enums.LearningStyle
+    hasLearningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     learningDisabilities?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

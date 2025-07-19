@@ -4,6 +4,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 
+const NAV_ITEMS = [
+  { href: "#home", label: "Home" },
+  { href: "#sessions", label: "Sessions" },
+  { href: "#about", label: "About" },
+];
+
 export default function Navigation() {
   const { user, logout } = useAuth();
 
@@ -24,24 +30,15 @@ export default function Navigation() {
 
           {/* Navigation Links */}
           <div className="flex-1 hidden md:flex justify-center space-x-8">
-            <Link
-              href="#home"
-              className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              href="#sessions"
-              className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium"
-            >
-              Sessions
-            </Link>
-            <Link
-              href="#about"
-              className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium"
-            >
-              About
-            </Link>
+            {NAV_ITEMS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-black hover:text-gray-600 px-3 py-2 text-sm font-medium"
+              >
+                {label}
+              </Link>
+            ))}
           </div>
 
           {/* Auth Buttons */}

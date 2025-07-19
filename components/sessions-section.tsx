@@ -1,169 +1,164 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { BookmarkIcon } from "@heroicons/react/24/outline";
 
-const mentors = [
+interface Mentor {
+  id: number;
+  name: string;
+  location: string;
+  tags: string[];
+  description: string;
+  duration: string;
+  languages: string[];
+  availability: string[];
+  price: string;
+  image: string;
+  role: string;
+}
+
+const mentors: Mentor[] = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    role: "Career Development Coach",
-    expertise: "Career transitions, Leadership, Personal branding",
-    experience: "15+ years",
-    rating: 4.9,
-    sessions: 1200,
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-    price: "$150",
-    availability: ["Mon", "Wed", "Fri"],
-    description: "Helping professionals navigate career transitions and develop leadership skills."
+    name: "Rahul Lavan",
+    location: "Colombo",
+    tags: ["Science", "Physics", "Biology"],
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    duration: "30 mins – 1 hour",
+    languages: ["English", "Tamil"],
+    availability: ["Monday", "Wednesday", "Friday"],
+    price: "$50/hr",
+    image: "/api/placeholder/64/64",
+    role: "Science Tutor",
   },
   {
     id: 2,
-    name: "Michael Chen",
-    role: "Tech Mentor",
-    expertise: "Software Development, AI/ML, Product Management",
-    experience: "12+ years",
-    rating: 4.8,
-    sessions: 950,
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-    price: "$180",
-    availability: ["Tue", "Thu", "Sat"],
-    description: "Expert in modern software development practices and emerging technologies."
+    name: "Chathum Rahal",
+    location: "Galle",
+    tags: ["Mathematics", "History", "English"],
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    duration: "1 hour",
+    languages: ["English"],
+    availability: ["Tuesday", "Thursday", "Saturday"],
+    price: "$45/hr",
+    image: "/api/placeholder/64/64",
+    role: "Math & History Tutor",
   },
   {
     id: 3,
-    name: "Emily Rodriguez",
-    role: "Business Strategy Advisor",
-    expertise: "Startup growth, Business planning, Market analysis",
-    experience: "18+ years",
-    rating: 4.9,
-    sessions: 800,
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-    price: "$200",
-    availability: ["Mon", "Tue", "Wed"],
-    description: "Guiding entrepreneurs and businesses through strategic planning and growth."
+    name: "Malsha Fernando",
+    location: "Colombo",
+    tags: ["Chemistry", "Art", "Commerce"],
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    duration: "1 hour",
+    languages: ["Sinhala"],
+    availability: ["Monday", "Tuesday", "Sunday"],
+    price: "$40/hr",
+    image: "/api/placeholder/64/64",
+    role: "Chemistry & Art Tutor",
   },
-  {
-    id: 4,
-    name: "David Kim",
-    role: "Life Coach",
-    expertise: "Personal development, Goal setting, Work-life balance",
-    experience: "10+ years",
-    rating: 4.7,
-    sessions: 650,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-    price: "$120",
-    availability: ["Thu", "Fri", "Sun"],
-    description: "Supporting individuals in achieving personal and professional goals."
-  },
-  {
-    id: 5,
-    name: "Lisa Thompson",
-    role: "Marketing Specialist",
-    expertise: "Digital marketing, Brand strategy, Social media",
-    experience: "14+ years",
-    rating: 4.8,
-    sessions: 1100,
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&crop=face",
-    price: "$160",
-    availability: ["Mon", "Wed", "Sat"],
-    description: "Helping businesses build strong brands and effective marketing strategies."
-  },
-  {
-    id: 6,
-    name: "James Wilson",
-    role: "Financial Advisor",
-    expertise: "Investment planning, Financial literacy, Retirement planning",
-    experience: "20+ years",
-    rating: 4.9,
-    sessions: 1400,
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face",
-    price: "$220",
-    availability: ["Tue", "Thu", "Fri"],
-    description: "Providing comprehensive financial guidance for long-term wealth building."
-  }
 ];
 
 export default function SessionsSection() {
-  const [selectedMentor, setSelectedMentor] = useState<typeof mentors[0] | null>(null);
+  const [bookmarked, setBookmarked] = useState<number | null>(null);
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
 
-  const handleBookSession = (mentor: typeof mentors[0]) => {
+  const initials = (name: string) =>
+    name
+      .split(" ")
+      .map((n) => n[0])
+      .join("");
+
+  const handleBookSession = (mentor: Mentor) => {
     setSelectedMentor(mentor);
     setShowBookingModal(true);
   };
 
   return (
-    <section id="sessions" className="py-20 bg-white">
+    <section id="sessions" className="py-20 bg-gradient-to-r from-blue-50 to-green-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Book Your Session
+          <h2 className="text-5xl font-normal text-black mb-4">
+            Session Highlights – Trending Now
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Choose from our expert mentors and book a session that fits your schedule. 
-            Each mentor brings unique expertise and experience to help you achieve your goals.
+          <p className="text-xl text-black max-w-3xl mx-auto">
+            Join the sessions students are raving about. These expert-led,
+            high-impact sessions are designed to help you unlock your full
+            potential, whether you're polishing your resume, mapping out your
+            career path, or getting ready to ace technical interviews.
           </p>
         </div>
 
-        {/* Mentors Grid */}
+        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {mentors.map((mentor) => (
-            <Card key={mentor.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+          {mentors.map((m) => (
+            <Card key={m.id} className="relative bg-white rounded-t-xl overflow-hidden">
               <CardHeader className="pb-4">
                 <div className="flex items-center space-x-4">
-                  <img
-                    src={mentor.image}
-                    alt={mentor.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <CardTitle className="text-lg font-semibold text-gray-900">{mentor.name}</CardTitle>
-                    <p className="text-sm text-blue-600 font-medium">{mentor.role}</p>
+                  <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center text-lg font-semibold text-gray-900">
+                    {initials(m.name)}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">{m.name}</h3>
+                    <p className="text-sm text-gray-500">{m.location}</p>
                   </div>
                 </div>
               </CardHeader>
-              
-              <CardContent className="space-y-4">
-                <p className="text-gray-600 text-sm">{mentor.description}</p>
-                
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">Experience: {mentor.experience}</span>
-                  <div className="flex items-center space-x-1">
-                    <span className="text-yellow-500">★</span>
-                    <span className="font-medium">{mentor.rating}</span>
-                    <span className="text-gray-500">({mentor.sessions} sessions)</span>
-                  </div>
+              <CardContent className="px-4 space-y-4">
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {m.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-1 bg-gray-200 text-gray-800 text-xs rounded"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
 
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-900">Expertise:</p>
-                  <p className="text-sm text-gray-600">{mentor.expertise}</p>
-                </div>
+                {/* Description */}
+                <p className="text-gray-700 text-sm">{m.description}</p>
 
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-900">Available:</p>
                   <div className="flex flex-wrap gap-1">
-                    {mentor.availability.map((day) => (
+                    {m.availability.map((day) => (
                       <span key={day} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
                         {day}
                       </span>
                     ))}
                   </div>
                 </div>
-
-                <div className="flex items-center justify-between pt-4 border-t">
-                  <div className="text-2xl font-bold text-gray-900">{mentor.price}</div>
-                  <Button 
-                    onClick={() => handleBookSession(mentor)}
-                    className="bg-black hover:bg-gray-800 text-white"
-                  >
-                    Book Session
-                  </Button>
-                </div>
               </CardContent>
+
+              {/* Arch for card footer */}
+              <div className="w-full h-6 bg-white rounded-b-full -mt-6"></div>
+              {/* Footer - Book Button & Bookmark */}
+              <div className="flex items-center justify-between px-4 -mt-4">
+                <Button className="bg-black hover:bg-gray-800 text-white px-6 py-2 rounded" onClick={() => handleBookSession(m)}>
+                  Book a session
+                </Button>
+                <button
+                  onClick={() =>
+                    setBookmarked(bookmarked === m.id ? null : m.id)
+                  }
+                  className="p-2 text-gray-500 hover:text-gray-700"
+                >
+                  <BookmarkIcon
+                    className={`w-6 h-6 ${
+                      bookmarked === m.id ? "text-indigo-600" : ""
+                    }`}
+                  />
+                </button>
+              </div>
             </Card>
           ))}
         </div>
@@ -236,4 +231,4 @@ export default function SessionsSection() {
       </div>
     </section>
   );
-} 
+}

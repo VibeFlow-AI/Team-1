@@ -38,9 +38,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">M</span>
-            </div>
+            <img src="/img.jpg" alt="Edu Vibe Logo" className="w-12 h-12 object-contain rounded-lg" />
           </div>
           <CardTitle className="text-2xl font-bold text-gray-900">Welcome Back</CardTitle>
           <p className="text-gray-600">Sign in to your account</p>

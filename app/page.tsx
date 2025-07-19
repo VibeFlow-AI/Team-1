@@ -1,10 +1,17 @@
-import SampleView from "@/components/sample-view";
-import { prisma } from "@/lib/prisma";
+import Navigation from "@/components/navigation";
+import HeroSection from "@/components/hero-section";
+import GallerySection from "@/components/gallery-section";
+import SessionsSection from "@/components/sessions-section";
+import Footer from "@/components/footer";
 
-async function Home() {
-  const samples = await prisma.sample.findMany();
-
-  return <SampleView initialSamples={samples} />;
+export default function Home() {
+  return (
+    <main className="min-h-screen">
+      <Navigation />
+      <HeroSection />
+      <GallerySection />
+      <SessionsSection />
+      <Footer />
+    </main>
+  );
 }
-
-export default Home;

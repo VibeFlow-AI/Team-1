@@ -14,6 +14,114 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      UserRole @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Student-specific fields
+  studentProfile StudentProfile?
+
+  // Mentor-specific fields
+  mentorProfile MentorProfile?
+
+  // Sessions
+  createdSessions Session[] @relation("MentorSessions")
+  bookedSessions  Booking[] @relation("StudentBookings")
+
+  @@map("users")
+}
+
+model StudentProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Basic Information
+  fullName              String
+  age                   Int
+  contactNumber         String
+  
+  // Academic Background
+  currentEducationLevel EducationLevel
+  school                String
+  
+  // Subject & Skill Assessment
+  subjectsOfInterest    String // Comma-separated subjects
+  currentYear           Int
+  skillLevels           Json    // Store as JSON: {subject: level}
+  preferredLearningStyle LearningStyle
+  learningDisabilities  String? // Description if any
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("student_profiles")
+}
+
+model MentorProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Basic Information
+  fullName              String
+  age                   Int
+  contactNumber         String
+  
+  // Professional Information
+  expertise             String // Comma-separated expertise areas
+  experience            Int    // Years of experience
+  bio                   String
+  hourlyRate            Float
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("mentor_profiles")
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  mentorId    String
+  mentor      User     @relation("MentorSessions", fields: [mentorId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String
+  subject     String
+  duration    Int      // in minutes
+  price       Float
+  maxStudents Int      @default(1)
+  date        DateTime
+  time        String   // Time slot
+  isActive    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  bookings    Booking[]
+
+  @@map("sessions")
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  studentId String
+  student   User     @relation("StudentBookings", fields: [studentId], references: [id], onDelete: Cascade)
+  
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sessionId, studentId])
+  @@map("bookings")
+}
+
 model Sample {
   id String @id @default(cuid())
 
@@ -21,4 +129,29 @@ model Sample {
   updatedAt DateTime @updatedAt
 
   @@map("samples")
+}
+
+enum UserRole {
+  STUDENT
+  MENTOR
+}
+
+enum EducationLevel {
+  GRADE_9
+  ORDINARY_LEVEL
+  ADVANCED_LEVEL
+}
+
+enum LearningStyle {
+  VISUAL
+  HANDS_ON
+  THEORETICAL
+  MIXED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
 }

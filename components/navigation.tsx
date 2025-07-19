@@ -25,7 +25,7 @@ export default function Navigation() {
               <Link href="#sessions" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
                 Sessions
               </Link>
-              <Link href="#about" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+              <Link href="/about" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
                 About
               </Link>
             </div>
@@ -41,4 +41,4 @@ export default function Navigation() {
       </div>
     </nav>
   );
-} 
+}

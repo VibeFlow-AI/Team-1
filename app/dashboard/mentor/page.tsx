@@ -43,39 +43,57 @@ export default function MentorDashboardPage() {
     time: '',
     maxStudents: 1,
   });
-  const { user, logout } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    // Don't redirect while auth is loading
+    if (authLoading) {
+      console.log('⏳ Mentor Dashboard: Auth still loading...');
+      return;
+    }
+
+    console.log('🔍 Mentor Dashboard: Auth loaded, user:', user);
+
     if (!user) {
+      console.log('❌ Mentor Dashboard: No user, redirecting to login');
       router.push('/auth/login');
       return;
     }
 
     if (user.role !== 'MENTOR') {
+      console.log('❌ Mentor Dashboard: Not a mentor, redirecting to main dashboard');
       router.push('/dashboard');
       return;
     }
 
     if (!user.hasProfile) {
+      console.log('📝 Mentor Dashboard: No profile, redirecting to onboarding');
       router.push('/auth/mentor/onboarding');
       return;
     }
 
+    console.log('✅ Mentor Dashboard: User authenticated, loading data');
     loadData();
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   const loadData = async () => {
     setIsLoading(true);
     try {
+      console.log('📡 Loading mentor sessions...');
       // Load mentor's sessions
-      const response = await fetch('/api/mentor/sessions');
+      const response = await fetch('/api/mentor/sessions', {
+        credentials: 'include',
+      });
       if (response.ok) {
         const data = await response.json();
         setSessions(data.sessions);
+        console.log('✅ Mentor sessions loaded:', data.sessions.length);
+      } else {
+        console.log('❌ Failed to load mentor sessions:', response.status);
       }
     } catch (error) {
-      console.error('Failed to load data:', error);
+      console.error('🚨 Failed to load mentor data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -84,13 +102,16 @@ export default function MentorDashboardPage() {
   const handleCreateSession = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log('📝 Creating new session...');
       const response = await fetch('/api/mentor/sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSession),
+        credentials: 'include',
       });
 
       if (response.ok) {
+        console.log('✅ Session created successfully');
         setShowCreateForm(false);
         setNewSession({
           title: '',
@@ -105,20 +126,36 @@ export default function MentorDashboardPage() {
         loadData();
       } else {
         const error = await response.json();
+        console.log('❌ Failed to create session:', error);
         alert(error.error || 'Failed to create session');
       }
     } catch (error) {
+      console.error('🚨 Session creation error:', error);
       alert('Network error. Please try again.');
     }
   };
 
   const handleLogout = async () => {
+    console.log('🚪 Mentor logging out...');
     await logout();
     router.push('/');
   };
 
+  // Show loading while auth is being checked
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if no user (will redirect)
   if (!user) {
-    return null; // Will redirect to login
+    return null;
   }
 
   return (

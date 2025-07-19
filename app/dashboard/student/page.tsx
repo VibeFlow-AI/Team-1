@@ -31,46 +31,70 @@ export default function StudentDashboardPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, logout } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    // Don't redirect while auth is loading
+    if (authLoading) {
+      console.log('⏳ Student Dashboard: Auth still loading...');
+      return;
+    }
+
+    console.log('🔍 Student Dashboard: Auth loaded, user:', user);
+
     if (!user) {
+      console.log('❌ Student Dashboard: No user, redirecting to login');
       router.push('/auth/login');
       return;
     }
 
     if (user.role !== 'STUDENT') {
+      console.log('❌ Student Dashboard: Not a student, redirecting to main dashboard');
       router.push('/dashboard');
       return;
     }
 
     if (!user.hasProfile) {
+      console.log('📝 Student Dashboard: No profile, redirecting to onboarding');
       router.push('/auth/student/onboarding');
       return;
     }
 
+    console.log('✅ Student Dashboard: User authenticated, loading data');
     loadData();
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   const loadData = async () => {
     setIsLoading(true);
     try {
+      console.log('📡 Loading sessions...');
       // Load available sessions
-      const sessionsResponse = await fetch('/api/sessions');
+      const sessionsResponse = await fetch('/api/sessions', {
+        credentials: 'include',
+      });
       if (sessionsResponse.ok) {
         const sessionsData = await sessionsResponse.json();
         setSessions(sessionsData.sessions);
+        console.log('✅ Sessions loaded:', sessionsData.sessions.length);
+      } else {
+        console.log('❌ Failed to load sessions:', sessionsResponse.status);
       }
 
+      console.log('📡 Loading bookings...');
       // Load booked sessions
-      const bookingsResponse = await fetch('/api/bookings');
+      const bookingsResponse = await fetch('/api/bookings', {
+        credentials: 'include',
+      });
       if (bookingsResponse.ok) {
         const bookingsData = await bookingsResponse.json();
         setBookings(bookingsData.bookings);
+        console.log('✅ Bookings loaded:', bookingsData.bookings.length);
+      } else {
+        console.log('❌ Failed to load bookings:', bookingsResponse.status);
       }
     } catch (error) {
-      console.error('Failed to load data:', error);
+      console.error('🚨 Failed to load data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -78,31 +102,50 @@ export default function StudentDashboardPage() {
 
   const handleBookSession = async (sessionId: string) => {
     try {
+      console.log('📝 Booking session:', sessionId);
       const response = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId }),
+        credentials: 'include',
       });
 
       if (response.ok) {
+        console.log('✅ Session booked successfully');
         // Reload data to update the UI
         loadData();
       } else {
         const error = await response.json();
+        console.log('❌ Failed to book session:', error);
         alert(error.error || 'Failed to book session');
       }
     } catch (error) {
+      console.error('🚨 Booking error:', error);
       alert('Network error. Please try again.');
     }
   };
 
   const handleLogout = async () => {
+    console.log('🚪 Student logging out...');
     await logout();
     router.push('/');
   };
 
+  // Show loading while auth is being checked
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if no user (will redirect)
   if (!user) {
-    return null; // Will redirect to login
+    return null;
   }
 
   return (

@@ -535,7 +535,7 @@ export default function MentorOnboardingPage() {
                   type="button"
                   onClick={nextStep}
                   disabled={!isStepValid()}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  className="bg-black hover:bg-gray-800 text-white"
                 >
                   Next
                 </Button>
@@ -543,7 +543,7 @@ export default function MentorOnboardingPage() {
                 <Button
                   type="submit"
                   disabled={isLoading || isSubmitted || !isStepValid()}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  className="bg-black hover:bg-gray-800 text-white"
                 >
                   {isLoading ? 'Saving...' : 'Complete Profile'}
                 </Button>

@@ -11,7 +11,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">M</span>
               </div>
-              <span className="ml-2 text-xl font-bold">MentorHub</span>
+              <span className="ml-2 text-xl font-bold">Edu Vibe</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
               Connecting ambitious individuals with experienced mentors to accelerate personal and professional growth.
@@ -63,15 +63,15 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <ul className="space-y-2 text-gray-300">
-              <li>hello@mentorhub.com</li>
+              <li>hello@eduvibe.com</li>
               <li>+1 (555) 123-4567</li>
               <li>123 Mentor Street<br />Learning City, LC 12345</li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 MentorHub. All rights reserved.</p>
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+          <p>&copy; 2024 Edu Vibe. All rights reserved.</p>
         </div>
       </div>
     </footer>

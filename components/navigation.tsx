@@ -47,7 +47,7 @@ export default function Navigation() {
               <>
                 <span className="text-gray-700 text-sm">Welcome, {user.email}</span>
                 <Link href="/dashboard">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                  <Button className="bg-black hover:bg-gray-800 text-white">
                     Dashboard
                   </Button>
                 </Link>
@@ -61,7 +61,7 @@ export default function Navigation() {
                   <Button variant="outline">Sign In</Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                  <Button className="bg-black hover:bg-gray-800 text-white">
                     Get Started
                   </Button>
                 </Link>

@@ -62,7 +62,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-gray-900">Create Account</CardTitle>
-          <p className="text-gray-600">Join MentorHub as a student or mentor</p>
+          <p className="text-gray-600">Join Edu Vibe as a student or mentor</p>
         </CardHeader>
         
         <CardContent>
@@ -146,7 +146,7 @@ export default function RegisterPage() {
             
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+              className="w-full bg-black hover:bg-gray-800 text-white"
               disabled={isLoading}
             >
               {isLoading ? 'Creating account...' : 'Create Account'}

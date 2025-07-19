@@ -242,7 +242,7 @@ export default function MentorDashboardPage() {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">M</span>
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">MentorHub</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">Edu Vibe</span>
             </div>
             
             <div className="flex items-center space-x-4">
@@ -471,7 +471,7 @@ export default function MentorDashboardPage() {
                                 {new Date(booking.sessionDate).toLocaleDateString()}
                               </p>
                               <p className="text-sm text-gray-600">{booking.sessionTime}</p>
-                              <Button size="sm" className="mt-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">
+                              <Button size="sm" className="mt-2 bg-black hover:bg-gray-800 text-white">
                                 Start Session
                               </Button>
                             </div>
@@ -488,7 +488,7 @@ export default function MentorDashboardPage() {
                   <h2 className="text-2xl font-bold text-gray-900">My Sessions</h2>
                   <Button
                     onClick={() => setActiveTab('create')}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                    className="bg-black hover:bg-gray-800 text-white"
                   >
                     Create New Session
                   </Button>
@@ -499,7 +499,7 @@ export default function MentorDashboardPage() {
                     <p className="text-gray-600">You haven't created any sessions yet.</p>
                     <Button
                       onClick={() => setActiveTab('create')}
-                      className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                      className="mt-4 bg-black hover:bg-gray-800 text-white"
                     >
                       Create Your First Session
                     </Button>
@@ -673,7 +673,7 @@ export default function MentorDashboardPage() {
                       <div className="flex space-x-4 pt-4">
                         <Button
                           type="submit"
-                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                          className="bg-black hover:bg-gray-800 text-white"
                         >
                           Create Session
                         </Button>

@@ -6397,6 +6397,7 @@ export namespace Prisma {
     updatedAt: Date | null
     bookedDate: string | null
     bookedTime: string | null
+    paymentSlipUrl: string | null
   }
 
   export type BookingMaxAggregateOutputType = {
@@ -6408,6 +6409,7 @@ export namespace Prisma {
     updatedAt: Date | null
     bookedDate: string | null
     bookedTime: string | null
+    paymentSlipUrl: string | null
   }
 
   export type BookingCountAggregateOutputType = {
@@ -6419,6 +6421,7 @@ export namespace Prisma {
     updatedAt: number
     bookedDate: number
     bookedTime: number
+    paymentSlipUrl: number
     _all: number
   }
 
@@ -6432,6 +6435,7 @@ export namespace Prisma {
     updatedAt?: true
     bookedDate?: true
     bookedTime?: true
+    paymentSlipUrl?: true
   }
 
   export type BookingMaxAggregateInputType = {
@@ -6443,6 +6447,7 @@ export namespace Prisma {
     updatedAt?: true
     bookedDate?: true
     bookedTime?: true
+    paymentSlipUrl?: true
   }
 
   export type BookingCountAggregateInputType = {
@@ -6454,6 +6459,7 @@ export namespace Prisma {
     updatedAt?: true
     bookedDate?: true
     bookedTime?: true
+    paymentSlipUrl?: true
     _all?: true
   }
 
@@ -6538,6 +6544,7 @@ export namespace Prisma {
     updatedAt: Date
     bookedDate: string | null
     bookedTime: string | null
+    paymentSlipUrl: string | null
     _count: BookingCountAggregateOutputType | null
     _min: BookingMinAggregateOutputType | null
     _max: BookingMaxAggregateOutputType | null
@@ -6566,6 +6573,7 @@ export namespace Prisma {
     updatedAt?: boolean
     bookedDate?: boolean
     bookedTime?: boolean
+    paymentSlipUrl?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -6579,6 +6587,7 @@ export namespace Prisma {
     updatedAt?: boolean
     bookedDate?: boolean
     bookedTime?: boolean
+    paymentSlipUrl?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -6592,6 +6601,7 @@ export namespace Prisma {
     updatedAt?: boolean
     bookedDate?: boolean
     bookedTime?: boolean
+    paymentSlipUrl?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -6605,9 +6615,10 @@ export namespace Prisma {
     updatedAt?: boolean
     bookedDate?: boolean
     bookedTime?: boolean
+    paymentSlipUrl?: boolean
   }
 
-  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "studentId" | "status" | "createdAt" | "updatedAt" | "bookedDate" | "bookedTime", ExtArgs["result"]["booking"]>
+  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "studentId" | "status" | "createdAt" | "updatedAt" | "bookedDate" | "bookedTime" | "paymentSlipUrl", ExtArgs["result"]["booking"]>
   export type BookingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
@@ -6636,6 +6647,7 @@ export namespace Prisma {
       updatedAt: Date
       bookedDate: string | null
       bookedTime: string | null
+      paymentSlipUrl: string | null
     }, ExtArgs["result"]["booking"]>
     composites: {}
   }
@@ -7069,6 +7081,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Booking", 'DateTime'>
     readonly bookedDate: FieldRef<"Booking", 'String'>
     readonly bookedTime: FieldRef<"Booking", 'String'>
+    readonly paymentSlipUrl: FieldRef<"Booking", 'String'>
   }
     
 
@@ -8554,7 +8567,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     bookedDate: 'bookedDate',
-    bookedTime: 'bookedTime'
+    bookedTime: 'bookedTime',
+    paymentSlipUrl: 'paymentSlipUrl'
   };
 
   export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
@@ -9180,6 +9194,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
     bookedDate?: StringNullableFilter<"Booking"> | string | null
     bookedTime?: StringNullableFilter<"Booking"> | string | null
+    paymentSlipUrl?: StringNullableFilter<"Booking"> | string | null
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -9193,6 +9208,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     bookedDate?: SortOrderInput | SortOrder
     bookedTime?: SortOrderInput | SortOrder
+    paymentSlipUrl?: SortOrderInput | SortOrder
     session?: SessionOrderByWithRelationInput
     student?: UserOrderByWithRelationInput
   }
@@ -9210,6 +9226,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
     bookedDate?: StringNullableFilter<"Booking"> | string | null
     bookedTime?: StringNullableFilter<"Booking"> | string | null
+    paymentSlipUrl?: StringNullableFilter<"Booking"> | string | null
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "sessionId_studentId">
@@ -9223,6 +9240,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     bookedDate?: SortOrderInput | SortOrder
     bookedTime?: SortOrderInput | SortOrder
+    paymentSlipUrl?: SortOrderInput | SortOrder
     _count?: BookingCountOrderByAggregateInput
     _max?: BookingMaxOrderByAggregateInput
     _min?: BookingMinOrderByAggregateInput
@@ -9240,6 +9258,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     bookedDate?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     bookedTime?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    paymentSlipUrl?: StringNullableWithAggregatesFilter<"Booking"> | string | null
   }
 
   export type SampleWhereInput = {
@@ -9784,6 +9803,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
     session: SessionCreateNestedOneWithoutBookingsInput
     student: UserCreateNestedOneWithoutBookedSessionsInput
   }
@@ -9797,6 +9817,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
   }
 
   export type BookingUpdateInput = {
@@ -9806,6 +9827,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
     session?: SessionUpdateOneRequiredWithoutBookingsNestedInput
     student?: UserUpdateOneRequiredWithoutBookedSessionsNestedInput
   }
@@ -9819,6 +9841,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingCreateManyInput = {
@@ -9830,6 +9853,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
   }
 
   export type BookingUpdateManyMutationInput = {
@@ -9839,6 +9863,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingUncheckedUpdateManyInput = {
@@ -9850,6 +9875,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SampleCreateInput = {
@@ -10504,6 +10530,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     bookedDate?: SortOrder
     bookedTime?: SortOrder
+    paymentSlipUrl?: SortOrder
   }
 
   export type BookingMaxOrderByAggregateInput = {
@@ -10515,6 +10542,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     bookedDate?: SortOrder
     bookedTime?: SortOrder
+    paymentSlipUrl?: SortOrder
   }
 
   export type BookingMinOrderByAggregateInput = {
@@ -10526,6 +10554,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     bookedDate?: SortOrder
     bookedTime?: SortOrder
+    paymentSlipUrl?: SortOrder
   }
 
   export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -11186,6 +11215,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
     session: SessionCreateNestedOneWithoutBookingsInput
   }
 
@@ -11197,6 +11227,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
   }
 
   export type BookingCreateOrConnectWithoutStudentInput = {
@@ -11369,6 +11400,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
     bookedDate?: StringNullableFilter<"Booking"> | string | null
     bookedTime?: StringNullableFilter<"Booking"> | string | null
+    paymentSlipUrl?: StringNullableFilter<"Booking"> | string | null
   }
 
   export type MentorProfileUpsertWithoutUserInput = {
@@ -11651,6 +11683,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
     student: UserCreateNestedOneWithoutBookedSessionsInput
   }
 
@@ -11662,6 +11695,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
   }
 
   export type BookingCreateOrConnectWithoutSessionInput = {
@@ -11914,6 +11948,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
   }
 
   export type SessionCreateManyMentorInput = {
@@ -11938,6 +11973,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
     session?: SessionUpdateOneRequiredWithoutBookingsNestedInput
   }
 
@@ -11949,6 +11985,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingUncheckedUpdateManyWithoutStudentInput = {
@@ -11959,6 +11996,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionUpdateWithoutMentorInput = {
@@ -12016,6 +12054,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     bookedDate?: string | null
     bookedTime?: string | null
+    paymentSlipUrl?: string | null
   }
 
   export type BookingUpdateWithoutSessionInput = {
@@ -12025,6 +12064,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
     student?: UserUpdateOneRequiredWithoutBookedSessionsNestedInput
   }
 
@@ -12036,6 +12076,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingUncheckedUpdateManyWithoutSessionInput = {
@@ -12046,6 +12087,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
     bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentSlipUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

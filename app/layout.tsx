@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MentorHub - Connect with Expert Mentors",
+  title: "Edu Vibe - Connect with Expert Mentors",
   description: "Find your perfect mentor and accelerate your learning journey",
 };
 

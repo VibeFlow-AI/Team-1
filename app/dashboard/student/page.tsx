@@ -5,6 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { CustomCalendar } from '@/components/ui/custom-calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 interface Session {
   id: string;
@@ -13,10 +18,9 @@ interface Session {
   subject: string;
   duration: number;
   price: number;
-  date: string;
-  time: string;
   mentor: {
     fullName: string;
+    language: string;
   };
 }
 
@@ -24,6 +28,9 @@ interface Booking {
   id: string;
   status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
   session: Session;
+  bookedDate: string;
+  bookedTime: string;
+  paymentSlipUrl?: string;
 }
 
 export default function StudentDashboardPage() {
@@ -31,8 +38,41 @@ export default function StudentDashboardPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedTime, setSelectedTime] = useState<string>('');
+  const [isBooking, setIsBooking] = useState(false);
+  const [paymentSlip, setPaymentSlip] = useState<File | null>(null);
+  const [bookingStep, setBookingStep] = useState<'details' | 'payment'>('details');
+  const [pendingBookingId, setPendingBookingId] = useState<string | null>(null);
   const { user, loading: authLoading, logout } = useAuth();
   const router = useRouter();
+
+  // Generate time slots based on session duration
+  const generateTimeSlots = (duration: number) => {
+    const slots = [];
+    const startHour = 9; // 9 AM
+    const endHour = 18; // 6 PM
+    
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const endHour = Math.floor((hour * 60 + minute + duration) / 60);
+        const endMinute = (hour * 60 + minute + duration) % 60;
+        const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`;
+        
+        if (endHour <= 18) {
+          slots.push({
+            value: startTime,
+            label: `${startTime} - ${endTime}`
+          });
+        }
+      }
+    }
+    
+    return slots;
+  };
 
   useEffect(() => {
     // Don't redirect while auth is loading
@@ -100,27 +140,156 @@ export default function StudentDashboardPage() {
     }
   };
 
-  const handleBookSession = async (sessionId: string) => {
+  const handleBookSession = async () => {
+    if (bookingStep === 'details') {
+      // Step 1: Create initial booking
+      if (!selectedSession || !selectedDate || !selectedTime) {
+        alert('Please select a date and time for your session.');
+        return;
+      }
+
+      setIsBooking(true);
+      try {
+        console.log('📝 Creating initial booking:', selectedSession.id, selectedDate, selectedTime);
+        const response = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            sessionId: selectedSession.id,
+            bookedDate: selectedDate.toISOString().split('T')[0],
+            bookedTime: selectedTime
+          }),
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('✅ Initial booking created:', data.booking);
+          setPendingBookingId(data.booking.id);
+          setBookingStep('payment');
+        } else {
+          const error = await response.json();
+          console.log('❌ Failed to create booking:', error);
+          alert(error.error || 'Failed to create booking');
+        }
+      } catch (error) {
+        console.error('🚨 Booking error:', error);
+        alert('Network error. Please try again.');
+      } finally {
+        setIsBooking(false);
+      }
+    } else if (bookingStep === 'payment') {
+      // Step 2: Upload payment slip and confirm booking
+      if (!paymentSlip) {
+        alert('Please upload a payment slip.');
+        return;
+      }
+
+      if (!pendingBookingId) {
+        alert('Booking ID not found. Please try again.');
+        return;
+      }
+
+      setIsBooking(true);
+      try {
+        console.log('📝 Uploading payment slip for booking:', pendingBookingId);
+        const formData = new FormData();
+        formData.append('bookingId', pendingBookingId);
+        formData.append('paymentSlip', paymentSlip);
+
+        const response = await fetch('/api/bookings', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          console.log('✅ Payment slip uploaded and booking confirmed');
+          alert('Payment slip uploaded successfully! Your booking is now confirmed.');
+          setIsBookingDialogOpen(false);
+          resetBookingForm();
+          // Reload data to update the UI
+          loadData();
+        } else {
+          const error = await response.json();
+          console.log('❌ Failed to upload payment slip:', error);
+          alert(error.error || 'Failed to upload payment slip');
+        }
+      } catch (error) {
+        console.error('🚨 Payment slip upload error:', error);
+        alert('Network error. Please try again.');
+      } finally {
+        setIsBooking(false);
+      }
+    }
+  };
+
+  const resetBookingForm = () => {
+    setSelectedSession(null);
+    setSelectedDate(undefined);
+    setSelectedTime('');
+    setPaymentSlip(null);
+    setBookingStep('details');
+    setPendingBookingId(null);
+  };
+
+  const handlePaymentSlipChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+      
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Only images (JPEG, PNG, GIF) and PDF files are allowed');
+        return;
+      }
+      
+      setPaymentSlip(file);
+    }
+  };
+
+  const handlePaymentSlipUpload = async (bookingId: string, file: File) => {
+    // Validate file
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size must be less than 5MB');
+      return;
+    }
+    
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Only images (JPEG, PNG, GIF) and PDF files are allowed');
+      return;
+    }
+
     try {
-      console.log('📝 Booking session:', sessionId);
+      console.log('📝 Uploading payment slip for existing booking:', bookingId);
+      const formData = new FormData();
+      formData.append('bookingId', bookingId);
+      formData.append('paymentSlip', file);
+
       const response = await fetch('/api/bookings', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId }),
+        body: formData,
         credentials: 'include',
       });
 
       if (response.ok) {
-        console.log('✅ Session booked successfully');
+        console.log('✅ Payment slip uploaded successfully');
+        alert('Payment slip uploaded successfully! Your booking is now confirmed.');
         // Reload data to update the UI
         loadData();
       } else {
         const error = await response.json();
-        console.log('❌ Failed to book session:', error);
-        alert(error.error || 'Failed to book session');
+        console.log('❌ Failed to upload payment slip:', error);
+        alert(error.error || 'Failed to upload payment slip');
       }
     } catch (error) {
-      console.error('🚨 Booking error:', error);
+      console.error('🚨 Payment slip upload error:', error);
       alert('Network error. Please try again.');
     }
   };
@@ -158,7 +327,7 @@ export default function StudentDashboardPage() {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">M</span>
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">MentorHub</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">Edu Vibe</span>
             </div>
             
             <div className="flex items-center space-x-4">
@@ -236,16 +405,12 @@ export default function StudentDashboardPage() {
                               <span className="font-medium">{session.mentor.fullName}</span>
                             </div>
                             <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Language:</span>
+                              <span className="font-medium">{session.mentor.language}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Duration:</span>
                               <span>{session.duration} minutes</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Date:</span>
-                              <span>{new Date(session.date).toLocaleDateString()}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Time:</span>
-                              <span>{session.time}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Price:</span>
@@ -253,12 +418,156 @@ export default function StudentDashboardPage() {
                             </div>
                           </div>
                           
-                          <Button
-                            onClick={() => handleBookSession(session.id)}
-                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                          >
-                            Book Session
-                          </Button>
+                          <Dialog open={isBookingDialogOpen && selectedSession?.id === session.id} onOpenChange={setIsBookingDialogOpen}>
+                            <DialogTrigger asChild>
+                              <Button
+                                onClick={() => setSelectedSession(session)}
+                                className="w-full bg-black hover:bg-gray-800 text-white"
+                              >
+                                Book Session
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-md">
+                              <DialogHeader>
+                                <DialogTitle>
+                                  {bookingStep === 'details' ? `Book Session: ${session.title}` : 'Upload Payment Slip'}
+                                </DialogTitle>
+                                {bookingStep === 'payment' && (
+                                  <div className="text-sm text-gray-600 mt-2">
+                                    Session: {session.title} | Date: {selectedDate?.toLocaleDateString()} | Time: {selectedTime}
+                                  </div>
+                                )}
+                              </DialogHeader>
+                              
+                              {/* Step indicators */}
+                              <div className="flex items-center space-x-4 mb-4">
+                                <div className={`flex items-center space-x-2 ${bookingStep === 'details' ? 'text-blue-600' : 'text-green-600'}`}>
+                                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium ${
+                                    bookingStep === 'details' ? 'bg-blue-600 text-white' : 'bg-green-600 text-white'
+                                  }`}>
+                                    1
+                                  </div>
+                                  <span className="text-sm font-medium">Session Details</span>
+                                </div>
+                                <div className={`w-8 h-0.5 ${bookingStep === 'payment' ? 'bg-blue-300' : 'bg-gray-300'}`}></div>
+                                <div className={`flex items-center space-x-2 ${bookingStep === 'payment' ? 'text-blue-600' : 'text-gray-400'}`}>
+                                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium ${
+                                    bookingStep === 'payment' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'
+                                  }`}>
+                                    2
+                                  </div>
+                                  <span className="text-sm font-medium">Payment</span>
+                                </div>
+                              </div>
+
+                              <div className="space-y-4">
+                                {bookingStep === 'details' ? (
+                                  <>
+                                    <div>
+                                      <Label>Select Date</Label>
+                                      <CustomCalendar
+                                        selected={selectedDate}
+                                        onSelect={setSelectedDate}
+                                        disabled={(date) => date < new Date()}
+                                        className="rounded-md border"
+                                      />
+                                    </div>
+                                    
+                                    <div>
+                                      <Label>Select Time Slot</Label>
+                                      <Select value={selectedTime} onValueChange={setSelectedTime}>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="Choose a time slot" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          {generateTimeSlots(session.duration).map((slot) => (
+                                            <SelectItem key={slot.value} value={slot.value}>
+                                              {slot.label}
+                                            </SelectItem>
+                                          ))}
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    
+                                    <div className="bg-blue-50 p-4 rounded-lg">
+                                      <p className="text-sm text-blue-800">
+                                        <strong>Note:</strong> After selecting your preferred date and time, you'll need to upload a payment slip to confirm your booking.
+                                      </p>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="bg-green-50 p-4 rounded-lg">
+                                      <p className="text-sm text-green-800 mb-2">
+                                        <strong>Session Reserved!</strong> Please upload your payment slip to confirm the booking.
+                                      </p>
+                                      <p className="text-sm text-green-700">
+                                        Session Price: <strong>${session.price}</strong>
+                                      </p>
+                                    </div>
+                                    
+                                    <div>
+                                      <Label htmlFor="payment-slip">Upload Payment Slip</Label>
+                                      <Input
+                                        id="payment-slip"
+                                        type="file"
+                                        accept="image/*,.pdf"
+                                        onChange={handlePaymentSlipChange}
+                                        className="mt-2"
+                                      />
+                                      <p className="text-xs text-gray-500 mt-1">
+                                        Accepted formats: JPG, PNG, GIF, PDF (Max size: 5MB)
+                                      </p>
+                                      {paymentSlip && (
+                                        <p className="text-sm text-green-600 mt-2">
+                                          ✓ Selected: {paymentSlip.name}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </>
+                                )}
+                                
+                                <div className="flex space-x-2 pt-4">
+                                  {bookingStep === 'details' ? (
+                                    <Button
+                                      onClick={handleBookSession}
+                                      disabled={isBooking || !selectedDate || !selectedTime}
+                                      className="flex-1 bg-black hover:bg-gray-800 text-white"
+                                    >
+                                      {isBooking ? 'Creating...' : 'Next: Payment'}
+                                    </Button>
+                                  ) : (
+                                    <>
+                                      <Button
+                                        variant="outline"
+                                        onClick={() => setBookingStep('details')}
+                                        disabled={isBooking}
+                                      >
+                                        Back
+                                      </Button>
+                                      <Button
+                                        onClick={handleBookSession}
+                                        disabled={isBooking || !paymentSlip}
+                                        className="flex-1 bg-black hover:bg-gray-800 text-white"
+                                      >
+                                        {isBooking ? 'Uploading...' : 'Confirm Booking'}
+                                      </Button>
+                                    </>
+                                  )}
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => {
+                                      setIsBookingDialogOpen(false);
+                                      resetBookingForm();
+                                    }}
+                                    disabled={isBooking}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </CardContent>
                       </Card>
                     ))}
@@ -273,7 +582,7 @@ export default function StudentDashboardPage() {
                     <p className="text-gray-600">You haven't booked any sessions yet.</p>
                     <Button
                       onClick={() => setActiveTab('explore')}
-                      className="mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                      className="mt-4 bg-black hover:bg-gray-800 text-white"
                     >
                       Explore Sessions
                     </Button>
@@ -285,13 +594,20 @@ export default function StudentDashboardPage() {
                         <CardHeader>
                           <CardTitle className="text-lg">{booking.session.title}</CardTitle>
                           <p className="text-sm text-blue-600 font-medium">{booking.session.subject}</p>
-                          <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                            booking.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
-                            booking.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                            booking.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
-                            'bg-gray-100 text-gray-800'
-                          }`}>
-                            {booking.status}
+                          <div className="flex items-center space-x-2">
+                            <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
+                              booking.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
+                              booking.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                              booking.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {booking.status}
+                            </div>
+                            {booking.status === 'PENDING' && (
+                              <span className="text-xs text-yellow-700">
+                                Payment Required
+                              </span>
+                            )}
                           </div>
                         </CardHeader>
                         <CardContent>
@@ -303,22 +619,70 @@ export default function StudentDashboardPage() {
                               <span className="font-medium">{booking.session.mentor.fullName}</span>
                             </div>
                             <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Language:</span>
+                              <span className="font-medium">{booking.session.mentor.language}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Duration:</span>
                               <span>{booking.session.duration} minutes</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Date:</span>
-                              <span>{new Date(booking.session.date).toLocaleDateString()}</span>
+                              <span className="text-gray-500">Booked Date:</span>
+                              <span>{new Date(booking.bookedDate).toLocaleDateString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Time:</span>
-                              <span>{booking.session.time}</span>
+                              <span className="text-gray-500">Booked Time:</span>
+                              <span>{booking.bookedTime}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Price:</span>
                               <span className="font-bold text-green-600">${booking.session.price}</span>
                             </div>
+                            {booking.paymentSlipUrl && (
+                              <div className="flex justify-between text-sm">
+                                <span className="text-gray-500">Payment Slip:</span>
+                                <a 
+                                  href={booking.paymentSlipUrl} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:text-blue-800 text-xs underline"
+                                >
+                                  View Receipt
+                                </a>
+                              </div>
+                            )}
                           </div>
+                          
+                          {/* Payment slip upload for pending bookings */}
+                          {booking.status === 'PENDING' && !booking.paymentSlipUrl && (
+                            <div className="mt-4 pt-4 border-t">
+                              <div className="space-y-3">
+                                <div className="bg-yellow-50 p-3 rounded-lg">
+                                  <p className="text-sm text-yellow-800">
+                                    <strong>Action Required:</strong> Upload your payment slip to confirm this booking.
+                                  </p>
+                                </div>
+                                <div>
+                                  <Label htmlFor={`payment-slip-${booking.id}`} className="text-sm font-medium">
+                                    Upload Payment Slip
+                                  </Label>
+                                  <Input
+                                    id={`payment-slip-${booking.id}`}
+                                    type="file"
+                                    accept="image/*,.pdf"
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) handlePaymentSlipUpload(booking.id, file);
+                                    }}
+                                    className="mt-1"
+                                  />
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    JPG, PNG, GIF, PDF (Max 5MB)
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </CardContent>
                       </Card>
                     ))}

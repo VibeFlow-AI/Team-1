@@ -158,7 +158,7 @@ export default function SessionsSection() {
                   <div className="text-2xl font-bold text-gray-900">{mentor.price}</div>
                   <Button 
                     onClick={() => handleBookSession(mentor)}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                    className="bg-black hover:bg-gray-800 text-white"
                   >
                     Book Session
                   </Button>
@@ -224,7 +224,7 @@ export default function SessionsSection() {
                     >
                       Cancel
                     </Button>
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                    <Button className="bg-black hover:bg-gray-800 text-white">
                       Confirm Booking
                     </Button>
                   </div>

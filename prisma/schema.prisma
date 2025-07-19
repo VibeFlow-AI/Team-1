@@ -1,130 +1,116 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  role      UserRole @default(STUDENT)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Student-specific fields
-  studentProfile StudentProfile?
-
-  // Mentor-specific fields
-  mentorProfile MentorProfile?
-
-  // Sessions
-  createdSessions Session[] @relation("MentorSessions")
-  bookedSessions  Booking[] @relation("StudentBookings")
+  id              String          @id @default(cuid())
+  email           String          @unique
+  password        String
+  role            UserRole        @default(STUDENT)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  hasProfile      Boolean         @default(false)
+  bookedSessions  Booking[]       @relation("StudentBookings")
+  mentorProfile   MentorProfile?
+  createdSessions Session[]       @relation("MentorSessions")
+  studentProfile  StudentProfile?
 
   @@map("users")
 }
 
 model StudentProfile {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  // Basic Information
-  fullName              String
-  age                   Int
-  contactNumber         String
-  
-  // Academic Background
-  currentEducationLevel EducationLevel
-  school                String
-  
-  // Subject & Skill Assessment
-  subjectsOfInterest    String // Comma-separated subjects
-  currentYear           Int
-  skillLevels           Json    // Store as JSON: {subject: level}
+  id                     String         @id @default(cuid())
+  userId                 String         @unique
+  fullName               String
+  age                    Int
+  contactNumber          String
+  currentEducationLevel  EducationLevel
+  school                 String
+  subjectsOfInterest     String
+  currentYear            Int
+  skillLevels            Json
   preferredLearningStyle LearningStyle
-  learningDisabilities  String? // Description if any
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  learningDisabilities   String?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  user                   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("student_profiles")
 }
 
 model MentorProfile {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  // Basic Information
-  fullName              String
-  age                   Int
-  contactNumber         String
-  
-  // Professional Information
-  expertise             String // Comma-separated expertise areas
-  experience            Int    // Years of experience
-  bio                   String
-  hourlyRate            Float
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  fullName           String
+  age                Int
+  contactNumber      String
+  expertise          String?
+  experience         Int?
+  bio                String?
+  hourlyRate         Float?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  currentLocation    String
+  email              String
+  githubPortfolio    String?
+  linkedinProfile    String
+  preferredLanguage  String
+  preferredLevels    Json
+  professionalRole   String
+  profilePictureUrl  String?
+  shortBio           String
+  subjects           Json
+  teachingExperience String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("mentor_profiles")
 }
 
 model Session {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   mentorId    String
-  mentor      User     @relation("MentorSessions", fields: [mentorId], references: [id], onDelete: Cascade)
-  
   title       String
   description String
   subject     String
-  duration    Int      // in minutes
+  duration    Int
   price       Float
-  maxStudents Int      @default(1)
+  maxStudents Int       @default(1)
   date        DateTime
-  time        String   // Time slot
-  isActive    Boolean  @default(true)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  time        String
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   bookings    Booking[]
+  mentor      User      @relation("MentorSessions", fields: [mentorId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
 
 model Booking {
-  id        String   @id @default(cuid())
-  sessionId String
-  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  studentId String
-  student   User     @relation("StudentBookings", fields: [studentId], references: [id], onDelete: Cascade)
-  
-  status    BookingStatus @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String        @id @default(cuid())
+  sessionId       String
+  studentId       String
+  status          BookingStatus @default(PENDING)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  bookedDate      String?
+  bookedTime      String?
+  paymentSlipUrl  String?
+  session         Session       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  student         User          @relation("StudentBookings", fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([sessionId, studentId])
   @@map("bookings")
 }
 
 model Sample {
-  id String @id @default(cuid())
-
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

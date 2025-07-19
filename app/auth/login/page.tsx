@@ -80,7 +80,7 @@ export default function LoginPage() {
             
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+              className="w-full bg-black hover:bg-gray-800 text-white"
               disabled={isLoading}
             >
               {isLoading ? 'Signing in...' : 'Sign In'}

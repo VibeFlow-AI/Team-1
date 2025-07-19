@@ -23,3 +23,7 @@ yarn-error.log*
 coverage/
 dist/
 build/
+
+# Uploaded files (for privacy and security)
+public/uploads/payment-slips/*
+!public/uploads/payment-slips/.gitkeep

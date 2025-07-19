@@ -27,9 +27,7 @@ export async function GET(request: NextRequest) {
     const sessions = await prisma.session.findMany({
       where: {
         isActive: true,
-        date: {
-          gte: new Date(), // Only future sessions
-        },
+        // Removed date filter to show all active sessions regardless of date
       },
       include: {
         mentor: {
@@ -42,6 +40,8 @@ export async function GET(request: NextRequest) {
         date: 'asc',
       },
     });
+
+    console.log(`📡 Found ${sessions.length} active sessions for students`);
 
     // Transform the data to include mentor name and language
     const transformedSessions = sessions.map(session => ({
@@ -58,6 +58,11 @@ export async function GET(request: NextRequest) {
         language: session.mentor.mentorProfile?.preferredLanguage || 'English',
       },
     }));
+
+    console.log(`📡 Returning ${transformedSessions.length} transformed sessions to student dashboard`);
+    if (transformedSessions.length > 0) {
+      console.log('📡 Sample session:', JSON.stringify(transformedSessions[0], null, 2));
+    }
 
     return NextResponse.json({ sessions: transformedSessions });
   } catch (error) {

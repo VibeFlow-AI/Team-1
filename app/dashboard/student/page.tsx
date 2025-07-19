@@ -6,7 +6,7 @@ import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Calendar } from '@/components/ui/calendar';
+import { CustomCalendar } from '@/components/ui/custom-calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 
@@ -316,8 +316,7 @@ export default function StudentDashboardPage() {
                               <div className="space-y-4">
                                 <div>
                                   <Label>Select Date</Label>
-                                  <Calendar
-                                    mode="single"
+                                  <CustomCalendar
                                     selected={selectedDate}
                                     onSelect={setSelectedDate}
                                     disabled={(date) => date < new Date()}

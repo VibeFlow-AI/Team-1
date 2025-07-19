@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Calendar } from '@/components/ui/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 interface Session {
   id: string;
@@ -13,10 +17,9 @@ interface Session {
   subject: string;
   duration: number;
   price: number;
-  date: string;
-  time: string;
   mentor: {
     fullName: string;
+    language: string;
   };
 }
 
@@ -24,6 +27,8 @@ interface Booking {
   id: string;
   status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
   session: Session;
+  bookedDate: string;
+  bookedTime: string;
 }
 
 export default function StudentDashboardPage() {
@@ -31,8 +36,38 @@ export default function StudentDashboardPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedTime, setSelectedTime] = useState<string>('');
+  const [isBooking, setIsBooking] = useState(false);
   const { user, loading: authLoading, logout } = useAuth();
   const router = useRouter();
+
+  // Generate time slots based on session duration
+  const generateTimeSlots = (duration: number) => {
+    const slots = [];
+    const startHour = 9; // 9 AM
+    const endHour = 18; // 6 PM
+    
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const endHour = Math.floor((hour * 60 + minute + duration) / 60);
+        const endMinute = (hour * 60 + minute + duration) % 60;
+        const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`;
+        
+        if (endHour <= 18) {
+          slots.push({
+            value: startTime,
+            label: `${startTime} - ${endTime}`
+          });
+        }
+      }
+    }
+    
+    return slots;
+  };
 
   useEffect(() => {
     // Don't redirect while auth is loading
@@ -100,18 +135,32 @@ export default function StudentDashboardPage() {
     }
   };
 
-  const handleBookSession = async (sessionId: string) => {
+  const handleBookSession = async () => {
+    if (!selectedSession || !selectedDate || !selectedTime) {
+      alert('Please select a date and time for your session.');
+      return;
+    }
+
+    setIsBooking(true);
     try {
-      console.log('📝 Booking session:', sessionId);
+      console.log('📝 Booking session:', selectedSession.id, selectedDate, selectedTime);
       const response = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId }),
+        body: JSON.stringify({ 
+          sessionId: selectedSession.id,
+          bookedDate: selectedDate.toISOString().split('T')[0],
+          bookedTime: selectedTime
+        }),
         credentials: 'include',
       });
 
       if (response.ok) {
         console.log('✅ Session booked successfully');
+        setIsBookingDialogOpen(false);
+        setSelectedSession(null);
+        setSelectedDate(undefined);
+        setSelectedTime('');
         // Reload data to update the UI
         loadData();
       } else {
@@ -122,6 +171,8 @@ export default function StudentDashboardPage() {
     } catch (error) {
       console.error('🚨 Booking error:', error);
       alert('Network error. Please try again.');
+    } finally {
+      setIsBooking(false);
     }
   };
 
@@ -236,16 +287,12 @@ export default function StudentDashboardPage() {
                               <span className="font-medium">{session.mentor.fullName}</span>
                             </div>
                             <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Language:</span>
+                              <span className="font-medium">{session.mentor.language}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Duration:</span>
                               <span>{session.duration} minutes</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Date:</span>
-                              <span>{new Date(session.date).toLocaleDateString()}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Time:</span>
-                              <span>{session.time}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Price:</span>
@@ -253,12 +300,70 @@ export default function StudentDashboardPage() {
                             </div>
                           </div>
                           
-                          <Button
-                            onClick={() => handleBookSession(session.id)}
-                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                          >
-                            Book Session
-                          </Button>
+                          <Dialog open={isBookingDialogOpen && selectedSession?.id === session.id} onOpenChange={setIsBookingDialogOpen}>
+                            <DialogTrigger asChild>
+                              <Button
+                                onClick={() => setSelectedSession(session)}
+                                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                              >
+                                Book Session
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-md">
+                              <DialogHeader>
+                                <DialogTitle>Book Session: {session.title}</DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4">
+                                <div>
+                                  <Label>Select Date</Label>
+                                  <Calendar
+                                    mode="single"
+                                    selected={selectedDate}
+                                    onSelect={setSelectedDate}
+                                    disabled={(date) => date < new Date()}
+                                    className="rounded-md border"
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label>Select Time Slot</Label>
+                                  <Select value={selectedTime} onValueChange={setSelectedTime}>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Choose a time slot" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {generateTimeSlots(session.duration).map((slot) => (
+                                        <SelectItem key={slot.value} value={slot.value}>
+                                          {slot.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                                
+                                <div className="flex space-x-2 pt-4">
+                                  <Button
+                                    onClick={handleBookSession}
+                                    disabled={isBooking || !selectedDate || !selectedTime}
+                                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                                  >
+                                    {isBooking ? 'Booking...' : 'Confirm Booking'}
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => {
+                                      setIsBookingDialogOpen(false);
+                                      setSelectedSession(null);
+                                      setSelectedDate(undefined);
+                                      setSelectedTime('');
+                                    }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </CardContent>
                       </Card>
                     ))}
@@ -303,16 +408,20 @@ export default function StudentDashboardPage() {
                               <span className="font-medium">{booking.session.mentor.fullName}</span>
                             </div>
                             <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Language:</span>
+                              <span className="font-medium">{booking.session.mentor.language}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Duration:</span>
                               <span>{booking.session.duration} minutes</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Date:</span>
-                              <span>{new Date(booking.session.date).toLocaleDateString()}</span>
+                              <span className="text-gray-500">Booked Date:</span>
+                              <span>{new Date(booking.bookedDate).toLocaleDateString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Time:</span>
-                              <span>{booking.session.time}</span>
+                              <span className="text-gray-500">Booked Time:</span>
+                              <span>{booking.bookedTime}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Price:</span>

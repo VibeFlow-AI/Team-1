@@ -1382,13 +1382,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    createdSessions: number
     bookedSessions: number
+    createdSessions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    createdSessions?: boolean | UserCountOutputTypeCountCreatedSessionsArgs
     bookedSessions?: boolean | UserCountOutputTypeCountBookedSessionsArgs
+    createdSessions?: boolean | UserCountOutputTypeCountCreatedSessionsArgs
   }
 
   // Custom InputTypes
@@ -1405,15 +1405,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountCreatedSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
+  export type UserCountOutputTypeCountBookedSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BookingWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountBookedSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BookingWhereInput
+  export type UserCountOutputTypeCountCreatedSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
   }
 
 
@@ -1469,6 +1469,7 @@ export namespace Prisma {
     role: $Enums.UserRole | null
     createdAt: Date | null
     updatedAt: Date | null
+    hasProfile: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1478,6 +1479,7 @@ export namespace Prisma {
     role: $Enums.UserRole | null
     createdAt: Date | null
     updatedAt: Date | null
+    hasProfile: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1487,6 +1489,7 @@ export namespace Prisma {
     role: number
     createdAt: number
     updatedAt: number
+    hasProfile: number
     _all: number
   }
 
@@ -1498,6 +1501,7 @@ export namespace Prisma {
     role?: true
     createdAt?: true
     updatedAt?: true
+    hasProfile?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1507,6 +1511,7 @@ export namespace Prisma {
     role?: true
     createdAt?: true
     updatedAt?: true
+    hasProfile?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1516,6 +1521,7 @@ export namespace Prisma {
     role?: true
     createdAt?: true
     updatedAt?: true
+    hasProfile?: true
     _all?: true
   }
 
@@ -1598,6 +1604,7 @@ export namespace Prisma {
     role: $Enums.UserRole
     createdAt: Date
     updatedAt: Date
+    hasProfile: boolean
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1624,10 +1631,11 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    studentProfile?: boolean | User$studentProfileArgs<ExtArgs>
+    hasProfile?: boolean
+    bookedSessions?: boolean | User$bookedSessionsArgs<ExtArgs>
     mentorProfile?: boolean | User$mentorProfileArgs<ExtArgs>
     createdSessions?: boolean | User$createdSessionsArgs<ExtArgs>
-    bookedSessions?: boolean | User$bookedSessionsArgs<ExtArgs>
+    studentProfile?: boolean | User$studentProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1638,6 +1646,7 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    hasProfile?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1647,6 +1656,7 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    hasProfile?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1656,14 +1666,15 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    hasProfile?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "role" | "createdAt" | "updatedAt" | "hasProfile", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    studentProfile?: boolean | User$studentProfileArgs<ExtArgs>
+    bookedSessions?: boolean | User$bookedSessionsArgs<ExtArgs>
     mentorProfile?: boolean | User$mentorProfileArgs<ExtArgs>
     createdSessions?: boolean | User$createdSessionsArgs<ExtArgs>
-    bookedSessions?: boolean | User$bookedSessionsArgs<ExtArgs>
+    studentProfile?: boolean | User$studentProfileArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1672,10 +1683,10 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      studentProfile: Prisma.$StudentProfilePayload<ExtArgs> | null
+      bookedSessions: Prisma.$BookingPayload<ExtArgs>[]
       mentorProfile: Prisma.$MentorProfilePayload<ExtArgs> | null
       createdSessions: Prisma.$SessionPayload<ExtArgs>[]
-      bookedSessions: Prisma.$BookingPayload<ExtArgs>[]
+      studentProfile: Prisma.$StudentProfilePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1684,6 +1695,7 @@ export namespace Prisma {
       role: $Enums.UserRole
       createdAt: Date
       updatedAt: Date
+      hasProfile: boolean
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2078,10 +2090,10 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    studentProfile<T extends User$studentProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$studentProfileArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    bookedSessions<T extends User$bookedSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$bookedSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mentorProfile<T extends User$mentorProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$mentorProfileArgs<ExtArgs>>): Prisma__MentorProfileClient<$Result.GetResult<Prisma.$MentorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     createdSessions<T extends User$createdSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    bookedSessions<T extends User$bookedSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$bookedSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    studentProfile<T extends User$studentProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$studentProfileArgs<ExtArgs>>): Prisma__StudentProfileClient<$Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2117,6 +2129,7 @@ export namespace Prisma {
     readonly role: FieldRef<"User", 'UserRole'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly hasProfile: FieldRef<"User", 'Boolean'>
   }
     
 
@@ -2346,6 +2359,7 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -2364,6 +2378,7 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -2503,22 +2518,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.studentProfile
+   * User.bookedSessions
    */
-  export type User$studentProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$bookedSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the StudentProfile
+     * Select specific fields to fetch from the Booking
      */
-    select?: StudentProfileSelect<ExtArgs> | null
+    select?: BookingSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the StudentProfile
+     * Omit specific fields from the Booking
      */
-    omit?: StudentProfileOmit<ExtArgs> | null
+    omit?: BookingOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: StudentProfileInclude<ExtArgs> | null
-    where?: StudentProfileWhereInput
+    include?: BookingInclude<ExtArgs> | null
+    where?: BookingWhereInput
+    orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
+    cursor?: BookingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
   }
 
   /**
@@ -2565,27 +2585,22 @@ export namespace Prisma {
   }
 
   /**
-   * User.bookedSessions
+   * User.studentProfile
    */
-  export type User$bookedSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$studentProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Booking
+     * Select specific fields to fetch from the StudentProfile
      */
-    select?: BookingSelect<ExtArgs> | null
+    select?: StudentProfileSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Booking
+     * Omit specific fields from the StudentProfile
      */
-    omit?: BookingOmit<ExtArgs> | null
+    omit?: StudentProfileOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: BookingInclude<ExtArgs> | null
-    where?: BookingWhereInput
-    orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
-    cursor?: BookingWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
+    include?: StudentProfileInclude<ExtArgs> | null
+    where?: StudentProfileWhereInput
   }
 
   /**
@@ -3631,6 +3646,7 @@ export namespace Prisma {
      * The data used to create many StudentProfiles.
      */
     data: StudentProfileCreateManyInput | StudentProfileCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -3649,6 +3665,7 @@ export namespace Prisma {
      * The data used to create many StudentProfiles.
      */
     data: StudentProfileCreateManyInput | StudentProfileCreateManyInput[]
+    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3850,6 +3867,15 @@ export namespace Prisma {
     hourlyRate: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    currentLocation: string | null
+    email: string | null
+    githubPortfolio: string | null
+    linkedinProfile: string | null
+    preferredLanguage: string | null
+    professionalRole: string | null
+    profilePictureUrl: string | null
+    shortBio: string | null
+    teachingExperience: string | null
   }
 
   export type MentorProfileMaxAggregateOutputType = {
@@ -3864,6 +3890,15 @@ export namespace Prisma {
     hourlyRate: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    currentLocation: string | null
+    email: string | null
+    githubPortfolio: string | null
+    linkedinProfile: string | null
+    preferredLanguage: string | null
+    professionalRole: string | null
+    profilePictureUrl: string | null
+    shortBio: string | null
+    teachingExperience: string | null
   }
 
   export type MentorProfileCountAggregateOutputType = {
@@ -3878,6 +3913,17 @@ export namespace Prisma {
     hourlyRate: number
     createdAt: number
     updatedAt: number
+    currentLocation: number
+    email: number
+    githubPortfolio: number
+    linkedinProfile: number
+    preferredLanguage: number
+    preferredLevels: number
+    professionalRole: number
+    profilePictureUrl: number
+    shortBio: number
+    subjects: number
+    teachingExperience: number
     _all: number
   }
 
@@ -3906,6 +3952,15 @@ export namespace Prisma {
     hourlyRate?: true
     createdAt?: true
     updatedAt?: true
+    currentLocation?: true
+    email?: true
+    githubPortfolio?: true
+    linkedinProfile?: true
+    preferredLanguage?: true
+    professionalRole?: true
+    profilePictureUrl?: true
+    shortBio?: true
+    teachingExperience?: true
   }
 
   export type MentorProfileMaxAggregateInputType = {
@@ -3920,6 +3975,15 @@ export namespace Prisma {
     hourlyRate?: true
     createdAt?: true
     updatedAt?: true
+    currentLocation?: true
+    email?: true
+    githubPortfolio?: true
+    linkedinProfile?: true
+    preferredLanguage?: true
+    professionalRole?: true
+    profilePictureUrl?: true
+    shortBio?: true
+    teachingExperience?: true
   }
 
   export type MentorProfileCountAggregateInputType = {
@@ -3934,6 +3998,17 @@ export namespace Prisma {
     hourlyRate?: true
     createdAt?: true
     updatedAt?: true
+    currentLocation?: true
+    email?: true
+    githubPortfolio?: true
+    linkedinProfile?: true
+    preferredLanguage?: true
+    preferredLevels?: true
+    professionalRole?: true
+    profilePictureUrl?: true
+    shortBio?: true
+    subjects?: true
+    teachingExperience?: true
     _all?: true
   }
 
@@ -4029,12 +4104,23 @@ export namespace Prisma {
     fullName: string
     age: number
     contactNumber: string
-    expertise: string
-    experience: number
-    bio: string
-    hourlyRate: number
+    expertise: string | null
+    experience: number | null
+    bio: string | null
+    hourlyRate: number | null
     createdAt: Date
     updatedAt: Date
+    currentLocation: string
+    email: string
+    githubPortfolio: string | null
+    linkedinProfile: string
+    preferredLanguage: string
+    preferredLevels: JsonValue
+    professionalRole: string
+    profilePictureUrl: string | null
+    shortBio: string
+    subjects: JsonValue
+    teachingExperience: string
     _count: MentorProfileCountAggregateOutputType | null
     _avg: MentorProfileAvgAggregateOutputType | null
     _sum: MentorProfileSumAggregateOutputType | null
@@ -4068,6 +4154,17 @@ export namespace Prisma {
     hourlyRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    currentLocation?: boolean
+    email?: boolean
+    githubPortfolio?: boolean
+    linkedinProfile?: boolean
+    preferredLanguage?: boolean
+    preferredLevels?: boolean
+    professionalRole?: boolean
+    profilePictureUrl?: boolean
+    shortBio?: boolean
+    subjects?: boolean
+    teachingExperience?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mentorProfile"]>
 
@@ -4083,6 +4180,17 @@ export namespace Prisma {
     hourlyRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    currentLocation?: boolean
+    email?: boolean
+    githubPortfolio?: boolean
+    linkedinProfile?: boolean
+    preferredLanguage?: boolean
+    preferredLevels?: boolean
+    professionalRole?: boolean
+    profilePictureUrl?: boolean
+    shortBio?: boolean
+    subjects?: boolean
+    teachingExperience?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mentorProfile"]>
 
@@ -4098,6 +4206,17 @@ export namespace Prisma {
     hourlyRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    currentLocation?: boolean
+    email?: boolean
+    githubPortfolio?: boolean
+    linkedinProfile?: boolean
+    preferredLanguage?: boolean
+    preferredLevels?: boolean
+    professionalRole?: boolean
+    profilePictureUrl?: boolean
+    shortBio?: boolean
+    subjects?: boolean
+    teachingExperience?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mentorProfile"]>
 
@@ -4113,9 +4232,20 @@ export namespace Prisma {
     hourlyRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    currentLocation?: boolean
+    email?: boolean
+    githubPortfolio?: boolean
+    linkedinProfile?: boolean
+    preferredLanguage?: boolean
+    preferredLevels?: boolean
+    professionalRole?: boolean
+    profilePictureUrl?: boolean
+    shortBio?: boolean
+    subjects?: boolean
+    teachingExperience?: boolean
   }
 
-  export type MentorProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "age" | "contactNumber" | "expertise" | "experience" | "bio" | "hourlyRate" | "createdAt" | "updatedAt", ExtArgs["result"]["mentorProfile"]>
+  export type MentorProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "age" | "contactNumber" | "expertise" | "experience" | "bio" | "hourlyRate" | "createdAt" | "updatedAt" | "currentLocation" | "email" | "githubPortfolio" | "linkedinProfile" | "preferredLanguage" | "preferredLevels" | "professionalRole" | "profilePictureUrl" | "shortBio" | "subjects" | "teachingExperience", ExtArgs["result"]["mentorProfile"]>
   export type MentorProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -4137,12 +4267,23 @@ export namespace Prisma {
       fullName: string
       age: number
       contactNumber: string
-      expertise: string
-      experience: number
-      bio: string
-      hourlyRate: number
+      expertise: string | null
+      experience: number | null
+      bio: string | null
+      hourlyRate: number | null
       createdAt: Date
       updatedAt: Date
+      currentLocation: string
+      email: string
+      githubPortfolio: string | null
+      linkedinProfile: string
+      preferredLanguage: string
+      preferredLevels: Prisma.JsonValue
+      professionalRole: string
+      profilePictureUrl: string | null
+      shortBio: string
+      subjects: Prisma.JsonValue
+      teachingExperience: string
     }, ExtArgs["result"]["mentorProfile"]>
     composites: {}
   }
@@ -4578,6 +4719,17 @@ export namespace Prisma {
     readonly hourlyRate: FieldRef<"MentorProfile", 'Float'>
     readonly createdAt: FieldRef<"MentorProfile", 'DateTime'>
     readonly updatedAt: FieldRef<"MentorProfile", 'DateTime'>
+    readonly currentLocation: FieldRef<"MentorProfile", 'String'>
+    readonly email: FieldRef<"MentorProfile", 'String'>
+    readonly githubPortfolio: FieldRef<"MentorProfile", 'String'>
+    readonly linkedinProfile: FieldRef<"MentorProfile", 'String'>
+    readonly preferredLanguage: FieldRef<"MentorProfile", 'String'>
+    readonly preferredLevels: FieldRef<"MentorProfile", 'Json'>
+    readonly professionalRole: FieldRef<"MentorProfile", 'String'>
+    readonly profilePictureUrl: FieldRef<"MentorProfile", 'String'>
+    readonly shortBio: FieldRef<"MentorProfile", 'String'>
+    readonly subjects: FieldRef<"MentorProfile", 'Json'>
+    readonly teachingExperience: FieldRef<"MentorProfile", 'String'>
   }
     
 
@@ -4807,6 +4959,7 @@ export namespace Prisma {
      * The data used to create many MentorProfiles.
      */
     data: MentorProfileCreateManyInput | MentorProfileCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -4825,6 +4978,7 @@ export namespace Prisma {
      * The data used to create many MentorProfiles.
      */
     data: MentorProfileCreateManyInput | MentorProfileCreateManyInput[]
+    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -5260,8 +5414,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    mentor?: boolean | UserDefaultArgs<ExtArgs>
     bookings?: boolean | Session$bookingsArgs<ExtArgs>
+    mentor?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | SessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
@@ -5317,8 +5471,8 @@ export namespace Prisma {
 
   export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mentorId" | "title" | "description" | "subject" | "duration" | "price" | "maxStudents" | "date" | "time" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["session"]>
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mentor?: boolean | UserDefaultArgs<ExtArgs>
     bookings?: boolean | Session$bookingsArgs<ExtArgs>
+    mentor?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | SessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5331,8 +5485,8 @@ export namespace Prisma {
   export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Session"
     objects: {
-      mentor: Prisma.$UserPayload<ExtArgs>
       bookings: Prisma.$BookingPayload<ExtArgs>[]
+      mentor: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5742,8 +5896,8 @@ export namespace Prisma {
    */
   export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    mentor<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bookings<T extends Session$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, Session$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mentor<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6015,6 +6169,7 @@ export namespace Prisma {
      * The data used to create many Sessions.
      */
     data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -6033,6 +6188,7 @@ export namespace Prisma {
      * The data used to create many Sessions.
      */
     data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -6239,6 +6395,8 @@ export namespace Prisma {
     status: $Enums.BookingStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    bookedDate: string | null
+    bookedTime: string | null
   }
 
   export type BookingMaxAggregateOutputType = {
@@ -6248,6 +6406,8 @@ export namespace Prisma {
     status: $Enums.BookingStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    bookedDate: string | null
+    bookedTime: string | null
   }
 
   export type BookingCountAggregateOutputType = {
@@ -6257,6 +6417,8 @@ export namespace Prisma {
     status: number
     createdAt: number
     updatedAt: number
+    bookedDate: number
+    bookedTime: number
     _all: number
   }
 
@@ -6268,6 +6430,8 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    bookedDate?: true
+    bookedTime?: true
   }
 
   export type BookingMaxAggregateInputType = {
@@ -6277,6 +6441,8 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    bookedDate?: true
+    bookedTime?: true
   }
 
   export type BookingCountAggregateInputType = {
@@ -6286,6 +6452,8 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    bookedDate?: true
+    bookedTime?: true
     _all?: true
   }
 
@@ -6368,6 +6536,8 @@ export namespace Prisma {
     status: $Enums.BookingStatus
     createdAt: Date
     updatedAt: Date
+    bookedDate: string | null
+    bookedTime: string | null
     _count: BookingCountAggregateOutputType | null
     _min: BookingMinAggregateOutputType | null
     _max: BookingMaxAggregateOutputType | null
@@ -6394,6 +6564,8 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    bookedDate?: boolean
+    bookedTime?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -6405,6 +6577,8 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    bookedDate?: boolean
+    bookedTime?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -6416,6 +6590,8 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    bookedDate?: boolean
+    bookedTime?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -6427,9 +6603,11 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    bookedDate?: boolean
+    bookedTime?: boolean
   }
 
-  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "studentId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "studentId" | "status" | "createdAt" | "updatedAt" | "bookedDate" | "bookedTime", ExtArgs["result"]["booking"]>
   export type BookingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     session?: boolean | SessionDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
@@ -6456,6 +6634,8 @@ export namespace Prisma {
       status: $Enums.BookingStatus
       createdAt: Date
       updatedAt: Date
+      bookedDate: string | null
+      bookedTime: string | null
     }, ExtArgs["result"]["booking"]>
     composites: {}
   }
@@ -6887,6 +7067,8 @@ export namespace Prisma {
     readonly status: FieldRef<"Booking", 'BookingStatus'>
     readonly createdAt: FieldRef<"Booking", 'DateTime'>
     readonly updatedAt: FieldRef<"Booking", 'DateTime'>
+    readonly bookedDate: FieldRef<"Booking", 'String'>
+    readonly bookedTime: FieldRef<"Booking", 'String'>
   }
     
 
@@ -7116,6 +7298,7 @@ export namespace Prisma {
      * The data used to create many Bookings.
      */
     data: BookingCreateManyInput | BookingCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -7134,6 +7317,7 @@ export namespace Prisma {
      * The data used to create many Bookings.
      */
     data: BookingCreateManyInput | BookingCreateManyInput[]
+    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -8107,6 +8291,7 @@ export namespace Prisma {
      * The data used to create many Samples.
      */
     data: SampleCreateManyInput | SampleCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -8125,6 +8310,7 @@ export namespace Prisma {
      * The data used to create many Samples.
      */
     data: SampleCreateManyInput | SampleCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -8271,6 +8457,9 @@ export namespace Prisma {
    */
 
   export const TransactionIsolationLevel: {
+    ReadUncommitted: 'ReadUncommitted',
+    ReadCommitted: 'ReadCommitted',
+    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -8283,7 +8472,8 @@ export namespace Prisma {
     password: 'password',
     role: 'role',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    hasProfile: 'hasProfile'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8320,7 +8510,18 @@ export namespace Prisma {
     bio: 'bio',
     hourlyRate: 'hourlyRate',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    currentLocation: 'currentLocation',
+    email: 'email',
+    githubPortfolio: 'githubPortfolio',
+    linkedinProfile: 'linkedinProfile',
+    preferredLanguage: 'preferredLanguage',
+    preferredLevels: 'preferredLevels',
+    professionalRole: 'professionalRole',
+    profilePictureUrl: 'profilePictureUrl',
+    shortBio: 'shortBio',
+    subjects: 'subjects',
+    teachingExperience: 'teachingExperience'
   };
 
   export type MentorProfileScalarFieldEnum = (typeof MentorProfileScalarFieldEnum)[keyof typeof MentorProfileScalarFieldEnum]
@@ -8351,7 +8552,9 @@ export namespace Prisma {
     studentId: 'studentId',
     status: 'status',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    bookedDate: 'bookedDate',
+    bookedTime: 'bookedTime'
   };
 
   export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
@@ -8381,6 +8584,14 @@ export namespace Prisma {
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
   export const JsonNullValueFilter: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull,
@@ -8388,14 +8599,6 @@ export namespace Prisma {
   };
 
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
   export const NullsOrder: {
@@ -8419,9 +8622,23 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'String[]'
+   */
+  export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
    * Reference to a field of type 'UserRole'
    */
   export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserRole[]'
+   */
+  export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 
@@ -8433,6 +8650,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -8440,9 +8671,23 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'EducationLevel'
    */
   export type EnumEducationLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EducationLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'EducationLevel[]'
+   */
+  export type ListEnumEducationLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EducationLevel[]'>
     
 
 
@@ -8468,6 +8713,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'LearningStyle[]'
+   */
+  export type ListEnumLearningStyleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LearningStyle[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -8475,9 +8727,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'Float[]'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -8485,6 +8737,13 @@ export namespace Prisma {
    * Reference to a field of type 'BookingStatus'
    */
   export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'BookingStatus[]'
+   */
+  export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus[]'>
     
   /**
    * Deep Input Types
@@ -8501,10 +8760,11 @@ export namespace Prisma {
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    studentProfile?: XOR<StudentProfileNullableScalarRelationFilter, StudentProfileWhereInput> | null
+    hasProfile?: BoolFilter<"User"> | boolean
+    bookedSessions?: BookingListRelationFilter
     mentorProfile?: XOR<MentorProfileNullableScalarRelationFilter, MentorProfileWhereInput> | null
     createdSessions?: SessionListRelationFilter
-    bookedSessions?: BookingListRelationFilter
+    studentProfile?: XOR<StudentProfileNullableScalarRelationFilter, StudentProfileWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8514,10 +8774,11 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    studentProfile?: StudentProfileOrderByWithRelationInput
+    hasProfile?: SortOrder
+    bookedSessions?: BookingOrderByRelationAggregateInput
     mentorProfile?: MentorProfileOrderByWithRelationInput
     createdSessions?: SessionOrderByRelationAggregateInput
-    bookedSessions?: BookingOrderByRelationAggregateInput
+    studentProfile?: StudentProfileOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8530,10 +8791,11 @@ export namespace Prisma {
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    studentProfile?: XOR<StudentProfileNullableScalarRelationFilter, StudentProfileWhereInput> | null
+    hasProfile?: BoolFilter<"User"> | boolean
+    bookedSessions?: BookingListRelationFilter
     mentorProfile?: XOR<MentorProfileNullableScalarRelationFilter, MentorProfileWhereInput> | null
     createdSessions?: SessionListRelationFilter
-    bookedSessions?: BookingListRelationFilter
+    studentProfile?: XOR<StudentProfileNullableScalarRelationFilter, StudentProfileWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -8543,6 +8805,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hasProfile?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -8558,6 +8821,7 @@ export namespace Prisma {
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    hasProfile?: BoolWithAggregatesFilter<"User"> | boolean
   }
 
   export type StudentProfileWhereInput = {
@@ -8671,12 +8935,23 @@ export namespace Prisma {
     fullName?: StringFilter<"MentorProfile"> | string
     age?: IntFilter<"MentorProfile"> | number
     contactNumber?: StringFilter<"MentorProfile"> | string
-    expertise?: StringFilter<"MentorProfile"> | string
-    experience?: IntFilter<"MentorProfile"> | number
-    bio?: StringFilter<"MentorProfile"> | string
-    hourlyRate?: FloatFilter<"MentorProfile"> | number
+    expertise?: StringNullableFilter<"MentorProfile"> | string | null
+    experience?: IntNullableFilter<"MentorProfile"> | number | null
+    bio?: StringNullableFilter<"MentorProfile"> | string | null
+    hourlyRate?: FloatNullableFilter<"MentorProfile"> | number | null
     createdAt?: DateTimeFilter<"MentorProfile"> | Date | string
     updatedAt?: DateTimeFilter<"MentorProfile"> | Date | string
+    currentLocation?: StringFilter<"MentorProfile"> | string
+    email?: StringFilter<"MentorProfile"> | string
+    githubPortfolio?: StringNullableFilter<"MentorProfile"> | string | null
+    linkedinProfile?: StringFilter<"MentorProfile"> | string
+    preferredLanguage?: StringFilter<"MentorProfile"> | string
+    preferredLevels?: JsonFilter<"MentorProfile">
+    professionalRole?: StringFilter<"MentorProfile"> | string
+    profilePictureUrl?: StringNullableFilter<"MentorProfile"> | string | null
+    shortBio?: StringFilter<"MentorProfile"> | string
+    subjects?: JsonFilter<"MentorProfile">
+    teachingExperience?: StringFilter<"MentorProfile"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -8686,12 +8961,23 @@ export namespace Prisma {
     fullName?: SortOrder
     age?: SortOrder
     contactNumber?: SortOrder
-    expertise?: SortOrder
-    experience?: SortOrder
-    bio?: SortOrder
-    hourlyRate?: SortOrder
+    expertise?: SortOrderInput | SortOrder
+    experience?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    hourlyRate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    currentLocation?: SortOrder
+    email?: SortOrder
+    githubPortfolio?: SortOrderInput | SortOrder
+    linkedinProfile?: SortOrder
+    preferredLanguage?: SortOrder
+    preferredLevels?: SortOrder
+    professionalRole?: SortOrder
+    profilePictureUrl?: SortOrderInput | SortOrder
+    shortBio?: SortOrder
+    subjects?: SortOrder
+    teachingExperience?: SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -8704,12 +8990,23 @@ export namespace Prisma {
     fullName?: StringFilter<"MentorProfile"> | string
     age?: IntFilter<"MentorProfile"> | number
     contactNumber?: StringFilter<"MentorProfile"> | string
-    expertise?: StringFilter<"MentorProfile"> | string
-    experience?: IntFilter<"MentorProfile"> | number
-    bio?: StringFilter<"MentorProfile"> | string
-    hourlyRate?: FloatFilter<"MentorProfile"> | number
+    expertise?: StringNullableFilter<"MentorProfile"> | string | null
+    experience?: IntNullableFilter<"MentorProfile"> | number | null
+    bio?: StringNullableFilter<"MentorProfile"> | string | null
+    hourlyRate?: FloatNullableFilter<"MentorProfile"> | number | null
     createdAt?: DateTimeFilter<"MentorProfile"> | Date | string
     updatedAt?: DateTimeFilter<"MentorProfile"> | Date | string
+    currentLocation?: StringFilter<"MentorProfile"> | string
+    email?: StringFilter<"MentorProfile"> | string
+    githubPortfolio?: StringNullableFilter<"MentorProfile"> | string | null
+    linkedinProfile?: StringFilter<"MentorProfile"> | string
+    preferredLanguage?: StringFilter<"MentorProfile"> | string
+    preferredLevels?: JsonFilter<"MentorProfile">
+    professionalRole?: StringFilter<"MentorProfile"> | string
+    profilePictureUrl?: StringNullableFilter<"MentorProfile"> | string | null
+    shortBio?: StringFilter<"MentorProfile"> | string
+    subjects?: JsonFilter<"MentorProfile">
+    teachingExperience?: StringFilter<"MentorProfile"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId">
 
@@ -8719,12 +9016,23 @@ export namespace Prisma {
     fullName?: SortOrder
     age?: SortOrder
     contactNumber?: SortOrder
-    expertise?: SortOrder
-    experience?: SortOrder
-    bio?: SortOrder
-    hourlyRate?: SortOrder
+    expertise?: SortOrderInput | SortOrder
+    experience?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    hourlyRate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    currentLocation?: SortOrder
+    email?: SortOrder
+    githubPortfolio?: SortOrderInput | SortOrder
+    linkedinProfile?: SortOrder
+    preferredLanguage?: SortOrder
+    preferredLevels?: SortOrder
+    professionalRole?: SortOrder
+    profilePictureUrl?: SortOrderInput | SortOrder
+    shortBio?: SortOrder
+    subjects?: SortOrder
+    teachingExperience?: SortOrder
     _count?: MentorProfileCountOrderByAggregateInput
     _avg?: MentorProfileAvgOrderByAggregateInput
     _max?: MentorProfileMaxOrderByAggregateInput
@@ -8741,12 +9049,23 @@ export namespace Prisma {
     fullName?: StringWithAggregatesFilter<"MentorProfile"> | string
     age?: IntWithAggregatesFilter<"MentorProfile"> | number
     contactNumber?: StringWithAggregatesFilter<"MentorProfile"> | string
-    expertise?: StringWithAggregatesFilter<"MentorProfile"> | string
-    experience?: IntWithAggregatesFilter<"MentorProfile"> | number
-    bio?: StringWithAggregatesFilter<"MentorProfile"> | string
-    hourlyRate?: FloatWithAggregatesFilter<"MentorProfile"> | number
+    expertise?: StringNullableWithAggregatesFilter<"MentorProfile"> | string | null
+    experience?: IntNullableWithAggregatesFilter<"MentorProfile"> | number | null
+    bio?: StringNullableWithAggregatesFilter<"MentorProfile"> | string | null
+    hourlyRate?: FloatNullableWithAggregatesFilter<"MentorProfile"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"MentorProfile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MentorProfile"> | Date | string
+    currentLocation?: StringWithAggregatesFilter<"MentorProfile"> | string
+    email?: StringWithAggregatesFilter<"MentorProfile"> | string
+    githubPortfolio?: StringNullableWithAggregatesFilter<"MentorProfile"> | string | null
+    linkedinProfile?: StringWithAggregatesFilter<"MentorProfile"> | string
+    preferredLanguage?: StringWithAggregatesFilter<"MentorProfile"> | string
+    preferredLevels?: JsonWithAggregatesFilter<"MentorProfile">
+    professionalRole?: StringWithAggregatesFilter<"MentorProfile"> | string
+    profilePictureUrl?: StringNullableWithAggregatesFilter<"MentorProfile"> | string | null
+    shortBio?: StringWithAggregatesFilter<"MentorProfile"> | string
+    subjects?: JsonWithAggregatesFilter<"MentorProfile">
+    teachingExperience?: StringWithAggregatesFilter<"MentorProfile"> | string
   }
 
   export type SessionWhereInput = {
@@ -8766,8 +9085,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Session"> | boolean
     createdAt?: DateTimeFilter<"Session"> | Date | string
     updatedAt?: DateTimeFilter<"Session"> | Date | string
-    mentor?: XOR<UserScalarRelationFilter, UserWhereInput>
     bookings?: BookingListRelationFilter
+    mentor?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type SessionOrderByWithRelationInput = {
@@ -8784,8 +9103,8 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    mentor?: UserOrderByWithRelationInput
     bookings?: BookingOrderByRelationAggregateInput
+    mentor?: UserOrderByWithRelationInput
   }
 
   export type SessionWhereUniqueInput = Prisma.AtLeast<{
@@ -8805,8 +9124,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Session"> | boolean
     createdAt?: DateTimeFilter<"Session"> | Date | string
     updatedAt?: DateTimeFilter<"Session"> | Date | string
-    mentor?: XOR<UserScalarRelationFilter, UserWhereInput>
     bookings?: BookingListRelationFilter
+    mentor?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type SessionOrderByWithAggregationInput = {
@@ -8859,6 +9178,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
+    bookedDate?: StringNullableFilter<"Booking"> | string | null
+    bookedTime?: StringNullableFilter<"Booking"> | string | null
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -8870,6 +9191,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    bookedDate?: SortOrderInput | SortOrder
+    bookedTime?: SortOrderInput | SortOrder
     session?: SessionOrderByWithRelationInput
     student?: UserOrderByWithRelationInput
   }
@@ -8885,6 +9208,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
+    bookedDate?: StringNullableFilter<"Booking"> | string | null
+    bookedTime?: StringNullableFilter<"Booking"> | string | null
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "sessionId_studentId">
@@ -8896,6 +9221,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    bookedDate?: SortOrderInput | SortOrder
+    bookedTime?: SortOrderInput | SortOrder
     _count?: BookingCountOrderByAggregateInput
     _max?: BookingMaxOrderByAggregateInput
     _min?: BookingMinOrderByAggregateInput
@@ -8911,6 +9238,8 @@ export namespace Prisma {
     status?: EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
     createdAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
+    bookedDate?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    bookedTime?: StringNullableWithAggregatesFilter<"Booking"> | string | null
   }
 
   export type SampleWhereInput = {
@@ -8962,10 +9291,11 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
+    hasProfile?: boolean
+    bookedSessions?: BookingCreateNestedManyWithoutStudentInput
     mentorProfile?: MentorProfileCreateNestedOneWithoutUserInput
     createdSessions?: SessionCreateNestedManyWithoutMentorInput
-    bookedSessions?: BookingCreateNestedManyWithoutStudentInput
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -8975,10 +9305,11 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
+    hasProfile?: boolean
+    bookedSessions?: BookingUncheckedCreateNestedManyWithoutStudentInput
     mentorProfile?: MentorProfileUncheckedCreateNestedOneWithoutUserInput
     createdSessions?: SessionUncheckedCreateNestedManyWithoutMentorInput
-    bookedSessions?: BookingUncheckedCreateNestedManyWithoutStudentInput
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -8988,10 +9319,11 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
+    bookedSessions?: BookingUpdateManyWithoutStudentNestedInput
     mentorProfile?: MentorProfileUpdateOneWithoutUserNestedInput
     createdSessions?: SessionUpdateManyWithoutMentorNestedInput
-    bookedSessions?: BookingUpdateManyWithoutStudentNestedInput
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9001,10 +9333,11 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
+    bookedSessions?: BookingUncheckedUpdateManyWithoutStudentNestedInput
     mentorProfile?: MentorProfileUncheckedUpdateOneWithoutUserNestedInput
     createdSessions?: SessionUncheckedUpdateManyWithoutMentorNestedInput
-    bookedSessions?: BookingUncheckedUpdateManyWithoutStudentNestedInput
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9014,6 +9347,7 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
+    hasProfile?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -9023,6 +9357,7 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -9032,6 +9367,7 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StudentProfileCreateInput = {
@@ -9157,12 +9493,23 @@ export namespace Prisma {
     fullName: string
     age: number
     contactNumber: string
-    expertise: string
-    experience: number
-    bio: string
-    hourlyRate: number
+    expertise?: string | null
+    experience?: number | null
+    bio?: string | null
+    hourlyRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    currentLocation: string
+    email: string
+    githubPortfolio?: string | null
+    linkedinProfile: string
+    preferredLanguage: string
+    preferredLevels: JsonNullValueInput | InputJsonValue
+    professionalRole: string
+    profilePictureUrl?: string | null
+    shortBio: string
+    subjects: JsonNullValueInput | InputJsonValue
+    teachingExperience: string
     user: UserCreateNestedOneWithoutMentorProfileInput
   }
 
@@ -9172,12 +9519,23 @@ export namespace Prisma {
     fullName: string
     age: number
     contactNumber: string
-    expertise: string
-    experience: number
-    bio: string
-    hourlyRate: number
+    expertise?: string | null
+    experience?: number | null
+    bio?: string | null
+    hourlyRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    currentLocation: string
+    email: string
+    githubPortfolio?: string | null
+    linkedinProfile: string
+    preferredLanguage: string
+    preferredLevels: JsonNullValueInput | InputJsonValue
+    professionalRole: string
+    profilePictureUrl?: string | null
+    shortBio: string
+    subjects: JsonNullValueInput | InputJsonValue
+    teachingExperience: string
   }
 
   export type MentorProfileUpdateInput = {
@@ -9185,12 +9543,23 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
-    expertise?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    bio?: StringFieldUpdateOperationsInput | string
-    hourlyRate?: FloatFieldUpdateOperationsInput | number
+    expertise?: NullableStringFieldUpdateOperationsInput | string | null
+    experience?: NullableIntFieldUpdateOperationsInput | number | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hourlyRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentLocation?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    githubPortfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinProfile?: StringFieldUpdateOperationsInput | string
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
+    preferredLevels?: JsonNullValueInput | InputJsonValue
+    professionalRole?: StringFieldUpdateOperationsInput | string
+    profilePictureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shortBio?: StringFieldUpdateOperationsInput | string
+    subjects?: JsonNullValueInput | InputJsonValue
+    teachingExperience?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutMentorProfileNestedInput
   }
 
@@ -9200,12 +9569,23 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
-    expertise?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    bio?: StringFieldUpdateOperationsInput | string
-    hourlyRate?: FloatFieldUpdateOperationsInput | number
+    expertise?: NullableStringFieldUpdateOperationsInput | string | null
+    experience?: NullableIntFieldUpdateOperationsInput | number | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hourlyRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentLocation?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    githubPortfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinProfile?: StringFieldUpdateOperationsInput | string
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
+    preferredLevels?: JsonNullValueInput | InputJsonValue
+    professionalRole?: StringFieldUpdateOperationsInput | string
+    profilePictureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shortBio?: StringFieldUpdateOperationsInput | string
+    subjects?: JsonNullValueInput | InputJsonValue
+    teachingExperience?: StringFieldUpdateOperationsInput | string
   }
 
   export type MentorProfileCreateManyInput = {
@@ -9214,12 +9594,23 @@ export namespace Prisma {
     fullName: string
     age: number
     contactNumber: string
-    expertise: string
-    experience: number
-    bio: string
-    hourlyRate: number
+    expertise?: string | null
+    experience?: number | null
+    bio?: string | null
+    hourlyRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    currentLocation: string
+    email: string
+    githubPortfolio?: string | null
+    linkedinProfile: string
+    preferredLanguage: string
+    preferredLevels: JsonNullValueInput | InputJsonValue
+    professionalRole: string
+    profilePictureUrl?: string | null
+    shortBio: string
+    subjects: JsonNullValueInput | InputJsonValue
+    teachingExperience: string
   }
 
   export type MentorProfileUpdateManyMutationInput = {
@@ -9227,12 +9618,23 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
-    expertise?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    bio?: StringFieldUpdateOperationsInput | string
-    hourlyRate?: FloatFieldUpdateOperationsInput | number
+    expertise?: NullableStringFieldUpdateOperationsInput | string | null
+    experience?: NullableIntFieldUpdateOperationsInput | number | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hourlyRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentLocation?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    githubPortfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinProfile?: StringFieldUpdateOperationsInput | string
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
+    preferredLevels?: JsonNullValueInput | InputJsonValue
+    professionalRole?: StringFieldUpdateOperationsInput | string
+    profilePictureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shortBio?: StringFieldUpdateOperationsInput | string
+    subjects?: JsonNullValueInput | InputJsonValue
+    teachingExperience?: StringFieldUpdateOperationsInput | string
   }
 
   export type MentorProfileUncheckedUpdateManyInput = {
@@ -9241,12 +9643,23 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
     contactNumber?: StringFieldUpdateOperationsInput | string
-    expertise?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    bio?: StringFieldUpdateOperationsInput | string
-    hourlyRate?: FloatFieldUpdateOperationsInput | number
+    expertise?: NullableStringFieldUpdateOperationsInput | string | null
+    experience?: NullableIntFieldUpdateOperationsInput | number | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hourlyRate?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentLocation?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    githubPortfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinProfile?: StringFieldUpdateOperationsInput | string
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
+    preferredLevels?: JsonNullValueInput | InputJsonValue
+    professionalRole?: StringFieldUpdateOperationsInput | string
+    profilePictureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shortBio?: StringFieldUpdateOperationsInput | string
+    subjects?: JsonNullValueInput | InputJsonValue
+    teachingExperience?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionCreateInput = {
@@ -9262,8 +9675,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    mentor: UserCreateNestedOneWithoutCreatedSessionsInput
     bookings?: BookingCreateNestedManyWithoutSessionInput
+    mentor: UserCreateNestedOneWithoutCreatedSessionsInput
   }
 
   export type SessionUncheckedCreateInput = {
@@ -9296,8 +9709,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mentor?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     bookings?: BookingUpdateManyWithoutSessionNestedInput
+    mentor?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
   }
 
   export type SessionUncheckedUpdateInput = {
@@ -9369,6 +9782,8 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
     session: SessionCreateNestedOneWithoutBookingsInput
     student: UserCreateNestedOneWithoutBookedSessionsInput
   }
@@ -9380,6 +9795,8 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
   }
 
   export type BookingUpdateInput = {
@@ -9387,6 +9804,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
     session?: SessionUpdateOneRequiredWithoutBookingsNestedInput
     student?: UserUpdateOneRequiredWithoutBookedSessionsNestedInput
   }
@@ -9398,6 +9817,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingCreateManyInput = {
@@ -9407,6 +9828,8 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
   }
 
   export type BookingUpdateManyMutationInput = {
@@ -9414,6 +9837,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingUncheckedUpdateManyInput = {
@@ -9423,6 +9848,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SampleCreateInput = {
@@ -9469,8 +9896,8 @@ export namespace Prisma {
 
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -9478,20 +9905,21 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type EnumUserRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[]
-    notIn?: $Enums.UserRole[]
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -9499,9 +9927,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type StudentProfileNullableScalarRelationFilter = {
-    is?: StudentProfileWhereInput | null
-    isNot?: StudentProfileWhereInput | null
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type BookingListRelationFilter = {
+    every?: BookingWhereInput
+    some?: BookingWhereInput
+    none?: BookingWhereInput
   }
 
   export type MentorProfileNullableScalarRelationFilter = {
@@ -9515,17 +9949,16 @@ export namespace Prisma {
     none?: SessionWhereInput
   }
 
-  export type BookingListRelationFilter = {
-    every?: BookingWhereInput
-    some?: BookingWhereInput
-    none?: BookingWhereInput
-  }
-
-  export type SessionOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type StudentProfileNullableScalarRelationFilter = {
+    is?: StudentProfileWhereInput | null
+    isNot?: StudentProfileWhereInput | null
   }
 
   export type BookingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9536,6 +9969,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hasProfile?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -9545,6 +9979,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hasProfile?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9554,12 +9989,13 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hasProfile?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -9567,6 +10003,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -9575,8 +10012,8 @@ export namespace Prisma {
 
   export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[]
-    notIn?: $Enums.UserRole[]
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
     not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserRoleFilter<$PrismaModel>
@@ -9585,8 +10022,8 @@ export namespace Prisma {
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -9597,10 +10034,18 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -9610,8 +10055,8 @@ export namespace Prisma {
 
   export type EnumEducationLevelFilter<$PrismaModel = never> = {
     equals?: $Enums.EducationLevel | EnumEducationLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.EducationLevel[]
-    notIn?: $Enums.EducationLevel[]
+    in?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
     not?: NestedEnumEducationLevelFilter<$PrismaModel> | $Enums.EducationLevel
   }
   export type JsonFilter<$PrismaModel = never> =
@@ -9623,27 +10068,32 @@ export namespace Prisma {
 
   export type JsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
+    path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
     string_contains?: string | StringFieldRefInput<$PrismaModel>
     string_starts_with?: string | StringFieldRefInput<$PrismaModel>
     string_ends_with?: string | StringFieldRefInput<$PrismaModel>
     array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
     array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type EnumLearningStyleFilter<$PrismaModel = never> = {
     equals?: $Enums.LearningStyle | EnumLearningStyleFieldRefInput<$PrismaModel>
-    in?: $Enums.LearningStyle[]
-    notIn?: $Enums.LearningStyle[]
+    in?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
     not?: NestedEnumLearningStyleFilter<$PrismaModel> | $Enums.LearningStyle
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -9651,6 +10101,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
@@ -9725,8 +10176,8 @@ export namespace Prisma {
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -9741,8 +10192,8 @@ export namespace Prisma {
 
   export type EnumEducationLevelWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.EducationLevel | EnumEducationLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.EducationLevel[]
-    notIn?: $Enums.EducationLevel[]
+    in?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
     not?: NestedEnumEducationLevelWithAggregatesFilter<$PrismaModel> | $Enums.EducationLevel
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEducationLevelFilter<$PrismaModel>
@@ -9757,13 +10208,18 @@ export namespace Prisma {
 
   export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
+    path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
     string_contains?: string | StringFieldRefInput<$PrismaModel>
     string_starts_with?: string | StringFieldRefInput<$PrismaModel>
     string_ends_with?: string | StringFieldRefInput<$PrismaModel>
     array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
     array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedJsonFilter<$PrismaModel>
@@ -9772,8 +10228,8 @@ export namespace Prisma {
 
   export type EnumLearningStyleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.LearningStyle | EnumLearningStyleFieldRefInput<$PrismaModel>
-    in?: $Enums.LearningStyle[]
-    notIn?: $Enums.LearningStyle[]
+    in?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
     not?: NestedEnumLearningStyleWithAggregatesFilter<$PrismaModel> | $Enums.LearningStyle
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLearningStyleFilter<$PrismaModel>
@@ -9782,8 +10238,8 @@ export namespace Prisma {
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -9791,21 +10247,33 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type MentorProfileCountOrderByAggregateInput = {
@@ -9820,6 +10288,17 @@ export namespace Prisma {
     hourlyRate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    currentLocation?: SortOrder
+    email?: SortOrder
+    githubPortfolio?: SortOrder
+    linkedinProfile?: SortOrder
+    preferredLanguage?: SortOrder
+    preferredLevels?: SortOrder
+    professionalRole?: SortOrder
+    profilePictureUrl?: SortOrder
+    shortBio?: SortOrder
+    subjects?: SortOrder
+    teachingExperience?: SortOrder
   }
 
   export type MentorProfileAvgOrderByAggregateInput = {
@@ -9840,6 +10319,15 @@ export namespace Prisma {
     hourlyRate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    currentLocation?: SortOrder
+    email?: SortOrder
+    githubPortfolio?: SortOrder
+    linkedinProfile?: SortOrder
+    preferredLanguage?: SortOrder
+    professionalRole?: SortOrder
+    profilePictureUrl?: SortOrder
+    shortBio?: SortOrder
+    teachingExperience?: SortOrder
   }
 
   export type MentorProfileMinOrderByAggregateInput = {
@@ -9854,6 +10342,15 @@ export namespace Prisma {
     hourlyRate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    currentLocation?: SortOrder
+    email?: SortOrder
+    githubPortfolio?: SortOrder
+    linkedinProfile?: SortOrder
+    preferredLanguage?: SortOrder
+    professionalRole?: SortOrder
+    profilePictureUrl?: SortOrder
+    shortBio?: SortOrder
+    teachingExperience?: SortOrder
   }
 
   export type MentorProfileSumOrderByAggregateInput = {
@@ -9862,25 +10359,47 @@ export namespace Prisma {
     hourlyRate?: SortOrder
   }
 
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type SessionCountOrderByAggregateInput = {
@@ -9943,18 +10462,26 @@ export namespace Prisma {
     maxStudents?: SortOrder
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type EnumBookingStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BookingStatus[]
-    notIn?: $Enums.BookingStatus[]
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumBookingStatusFilter<$PrismaModel> | $Enums.BookingStatus
   }
 
@@ -9975,6 +10502,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    bookedDate?: SortOrder
+    bookedTime?: SortOrder
   }
 
   export type BookingMaxOrderByAggregateInput = {
@@ -9984,6 +10513,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    bookedDate?: SortOrder
+    bookedTime?: SortOrder
   }
 
   export type BookingMinOrderByAggregateInput = {
@@ -9993,12 +10524,14 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    bookedDate?: SortOrder
+    bookedTime?: SortOrder
   }
 
   export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BookingStatus[]
-    notIn?: $Enums.BookingStatus[]
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel> | $Enums.BookingStatus
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBookingStatusFilter<$PrismaModel>
@@ -10023,10 +10556,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StudentProfileCreateNestedOneWithoutUserInput = {
-    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
-    connect?: StudentProfileWhereUniqueInput
+  export type BookingCreateNestedManyWithoutStudentInput = {
+    create?: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput> | BookingCreateWithoutStudentInput[] | BookingUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutStudentInput | BookingCreateOrConnectWithoutStudentInput[]
+    createMany?: BookingCreateManyStudentInputEnvelope
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
   export type MentorProfileCreateNestedOneWithoutUserInput = {
@@ -10042,17 +10576,17 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type BookingCreateNestedManyWithoutStudentInput = {
+  export type StudentProfileCreateNestedOneWithoutUserInput = {
+    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
+    connect?: StudentProfileWhereUniqueInput
+  }
+
+  export type BookingUncheckedCreateNestedManyWithoutStudentInput = {
     create?: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput> | BookingCreateWithoutStudentInput[] | BookingUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutStudentInput | BookingCreateOrConnectWithoutStudentInput[]
     createMany?: BookingCreateManyStudentInputEnvelope
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
-  }
-
-  export type StudentProfileUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
-    connect?: StudentProfileWhereUniqueInput
   }
 
   export type MentorProfileUncheckedCreateNestedOneWithoutUserInput = {
@@ -10068,11 +10602,10 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type BookingUncheckedCreateNestedManyWithoutStudentInput = {
-    create?: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput> | BookingCreateWithoutStudentInput[] | BookingUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: BookingCreateOrConnectWithoutStudentInput | BookingCreateOrConnectWithoutStudentInput[]
-    createMany?: BookingCreateManyStudentInputEnvelope
-    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+  export type StudentProfileUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
+    connect?: StudentProfileWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -10087,14 +10620,22 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type StudentProfileUpdateOneWithoutUserNestedInput = {
-    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
-    upsert?: StudentProfileUpsertWithoutUserInput
-    disconnect?: StudentProfileWhereInput | boolean
-    delete?: StudentProfileWhereInput | boolean
-    connect?: StudentProfileWhereUniqueInput
-    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutUserInput, StudentProfileUpdateWithoutUserInput>, StudentProfileUncheckedUpdateWithoutUserInput>
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type BookingUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput> | BookingCreateWithoutStudentInput[] | BookingUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutStudentInput | BookingCreateOrConnectWithoutStudentInput[]
+    upsert?: BookingUpsertWithWhereUniqueWithoutStudentInput | BookingUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: BookingCreateManyStudentInputEnvelope
+    set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    update?: BookingUpdateWithWhereUniqueWithoutStudentInput | BookingUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: BookingUpdateManyWithWhereWithoutStudentInput | BookingUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
   export type MentorProfileUpdateOneWithoutUserNestedInput = {
@@ -10121,7 +10662,17 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
-  export type BookingUpdateManyWithoutStudentNestedInput = {
+  export type StudentProfileUpdateOneWithoutUserNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
+    upsert?: StudentProfileUpsertWithoutUserInput
+    disconnect?: StudentProfileWhereInput | boolean
+    delete?: StudentProfileWhereInput | boolean
+    connect?: StudentProfileWhereUniqueInput
+    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutUserInput, StudentProfileUpdateWithoutUserInput>, StudentProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BookingUncheckedUpdateManyWithoutStudentNestedInput = {
     create?: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput> | BookingCreateWithoutStudentInput[] | BookingUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutStudentInput | BookingCreateOrConnectWithoutStudentInput[]
     upsert?: BookingUpsertWithWhereUniqueWithoutStudentInput | BookingUpsertWithWhereUniqueWithoutStudentInput[]
@@ -10133,16 +10684,6 @@ export namespace Prisma {
     update?: BookingUpdateWithWhereUniqueWithoutStudentInput | BookingUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: BookingUpdateManyWithWhereWithoutStudentInput | BookingUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
-  }
-
-  export type StudentProfileUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
-    upsert?: StudentProfileUpsertWithoutUserInput
-    disconnect?: StudentProfileWhereInput | boolean
-    delete?: StudentProfileWhereInput | boolean
-    connect?: StudentProfileWhereUniqueInput
-    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutUserInput, StudentProfileUpdateWithoutUserInput>, StudentProfileUncheckedUpdateWithoutUserInput>
   }
 
   export type MentorProfileUncheckedUpdateOneWithoutUserNestedInput = {
@@ -10169,18 +10710,14 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
-  export type BookingUncheckedUpdateManyWithoutStudentNestedInput = {
-    create?: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput> | BookingCreateWithoutStudentInput[] | BookingUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: BookingCreateOrConnectWithoutStudentInput | BookingCreateOrConnectWithoutStudentInput[]
-    upsert?: BookingUpsertWithWhereUniqueWithoutStudentInput | BookingUpsertWithWhereUniqueWithoutStudentInput[]
-    createMany?: BookingCreateManyStudentInputEnvelope
-    set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
-    disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
-    delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
-    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
-    update?: BookingUpdateWithWhereUniqueWithoutStudentInput | BookingUpdateWithWhereUniqueWithoutStudentInput[]
-    updateMany?: BookingUpdateManyWithWhereWithoutStudentInput | BookingUpdateManyWithWhereWithoutStudentInput[]
-    deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
+  export type StudentProfileUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: StudentProfileCreateOrConnectWithoutUserInput
+    upsert?: StudentProfileUpsertWithoutUserInput
+    disconnect?: StudentProfileWhereInput | boolean
+    delete?: StudentProfileWhereInput | boolean
+    connect?: StudentProfileWhereUniqueInput
+    update?: XOR<XOR<StudentProfileUpdateToOneWithWhereWithoutUserInput, StudentProfileUpdateWithoutUserInput>, StudentProfileUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutStudentProfileInput = {
@@ -10223,8 +10760,16 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
@@ -10239,17 +10784,17 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMentorProfileInput, UserUpdateWithoutMentorProfileInput>, UserUncheckedUpdateWithoutMentorProfileInput>
   }
 
-  export type UserCreateNestedOneWithoutCreatedSessionsInput = {
-    create?: XOR<UserCreateWithoutCreatedSessionsInput, UserUncheckedCreateWithoutCreatedSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCreatedSessionsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type BookingCreateNestedManyWithoutSessionInput = {
     create?: XOR<BookingCreateWithoutSessionInput, BookingUncheckedCreateWithoutSessionInput> | BookingCreateWithoutSessionInput[] | BookingUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutSessionInput | BookingCreateOrConnectWithoutSessionInput[]
     createMany?: BookingCreateManySessionInputEnvelope
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutCreatedSessionsInput = {
+    create?: XOR<UserCreateWithoutCreatedSessionsInput, UserUncheckedCreateWithoutCreatedSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedSessionsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type BookingUncheckedCreateNestedManyWithoutSessionInput = {
@@ -10259,16 +10804,12 @@ export namespace Prisma {
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type UserUpdateOneRequiredWithoutCreatedSessionsNestedInput = {
-    create?: XOR<UserCreateWithoutCreatedSessionsInput, UserUncheckedCreateWithoutCreatedSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCreatedSessionsInput
-    upsert?: UserUpsertWithoutCreatedSessionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedSessionsInput, UserUpdateWithoutCreatedSessionsInput>, UserUncheckedUpdateWithoutCreatedSessionsInput>
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type BookingUpdateManyWithoutSessionNestedInput = {
@@ -10283,6 +10824,14 @@ export namespace Prisma {
     update?: BookingUpdateWithWhereUniqueWithoutSessionInput | BookingUpdateWithWhereUniqueWithoutSessionInput[]
     updateMany?: BookingUpdateManyWithWhereWithoutSessionInput | BookingUpdateManyWithWhereWithoutSessionInput[]
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedSessionsInput, UserUncheckedCreateWithoutCreatedSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedSessionsInput
+    upsert?: UserUpsertWithoutCreatedSessionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedSessionsInput, UserUpdateWithoutCreatedSessionsInput>, UserUncheckedUpdateWithoutCreatedSessionsInput>
   }
 
   export type BookingUncheckedUpdateManyWithoutSessionNestedInput = {
@@ -10333,8 +10882,8 @@ export namespace Prisma {
 
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -10347,15 +10896,15 @@ export namespace Prisma {
 
   export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[]
-    notIn?: $Enums.UserRole[]
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -10363,10 +10912,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -10382,8 +10936,8 @@ export namespace Prisma {
 
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -10393,8 +10947,8 @@ export namespace Prisma {
 
   export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[]
-    notIn?: $Enums.UserRole[]
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
     not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserRoleFilter<$PrismaModel>
@@ -10403,8 +10957,8 @@ export namespace Prisma {
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -10415,24 +10969,32 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedEnumEducationLevelFilter<$PrismaModel = never> = {
     equals?: $Enums.EducationLevel | EnumEducationLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.EducationLevel[]
-    notIn?: $Enums.EducationLevel[]
+    in?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
     not?: NestedEnumEducationLevelFilter<$PrismaModel> | $Enums.EducationLevel
   }
 
   export type NestedEnumLearningStyleFilter<$PrismaModel = never> = {
     equals?: $Enums.LearningStyle | EnumLearningStyleFieldRefInput<$PrismaModel>
-    in?: $Enums.LearningStyle[]
-    notIn?: $Enums.LearningStyle[]
+    in?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
     not?: NestedEnumLearningStyleFilter<$PrismaModel> | $Enums.LearningStyle
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -10445,8 +11007,8 @@ export namespace Prisma {
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -10461,8 +11023,8 @@ export namespace Prisma {
 
   export type NestedFloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -10472,8 +11034,8 @@ export namespace Prisma {
 
   export type NestedEnumEducationLevelWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.EducationLevel | EnumEducationLevelFieldRefInput<$PrismaModel>
-    in?: $Enums.EducationLevel[]
-    notIn?: $Enums.EducationLevel[]
+    in?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EducationLevel[] | ListEnumEducationLevelFieldRefInput<$PrismaModel>
     not?: NestedEnumEducationLevelWithAggregatesFilter<$PrismaModel> | $Enums.EducationLevel
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEducationLevelFilter<$PrismaModel>
@@ -10488,20 +11050,25 @@ export namespace Prisma {
 
   export type NestedJsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
+    path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
     string_contains?: string | StringFieldRefInput<$PrismaModel>
     string_starts_with?: string | StringFieldRefInput<$PrismaModel>
     string_ends_with?: string | StringFieldRefInput<$PrismaModel>
     array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
     array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumLearningStyleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.LearningStyle | EnumLearningStyleFieldRefInput<$PrismaModel>
-    in?: $Enums.LearningStyle[]
-    notIn?: $Enums.LearningStyle[]
+    in?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LearningStyle[] | ListEnumLearningStyleFieldRefInput<$PrismaModel>
     not?: NestedEnumLearningStyleWithAggregatesFilter<$PrismaModel> | $Enums.LearningStyle
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLearningStyleFilter<$PrismaModel>
@@ -10510,8 +11077,8 @@ export namespace Prisma {
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -10527,8 +11094,8 @@ export namespace Prisma {
 
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -10536,10 +11103,53 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -10552,71 +11162,51 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedEnumBookingStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BookingStatus[]
-    notIn?: $Enums.BookingStatus[]
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumBookingStatusFilter<$PrismaModel> | $Enums.BookingStatus
   }
 
   export type NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.BookingStatus[]
-    notIn?: $Enums.BookingStatus[]
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel> | $Enums.BookingStatus
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBookingStatusFilter<$PrismaModel>
     _max?: NestedEnumBookingStatusFilter<$PrismaModel>
   }
 
-  export type StudentProfileCreateWithoutUserInput = {
+  export type BookingCreateWithoutStudentInput = {
     id?: string
-    fullName: string
-    age: number
-    contactNumber: string
-    currentEducationLevel: $Enums.EducationLevel
-    school: string
-    subjectsOfInterest: string
-    currentYear: number
-    skillLevels: JsonNullValueInput | InputJsonValue
-    preferredLearningStyle: $Enums.LearningStyle
-    learningDisabilities?: string | null
+    status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
+    session: SessionCreateNestedOneWithoutBookingsInput
   }
 
-  export type StudentProfileUncheckedCreateWithoutUserInput = {
+  export type BookingUncheckedCreateWithoutStudentInput = {
     id?: string
-    fullName: string
-    age: number
-    contactNumber: string
-    currentEducationLevel: $Enums.EducationLevel
-    school: string
-    subjectsOfInterest: string
-    currentYear: number
-    skillLevels: JsonNullValueInput | InputJsonValue
-    preferredLearningStyle: $Enums.LearningStyle
-    learningDisabilities?: string | null
+    sessionId: string
+    status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
   }
 
-  export type StudentProfileCreateOrConnectWithoutUserInput = {
-    where: StudentProfileWhereUniqueInput
-    create: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
+  export type BookingCreateOrConnectWithoutStudentInput = {
+    where: BookingWhereUniqueInput
+    create: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput>
+  }
+
+  export type BookingCreateManyStudentInputEnvelope = {
+    data: BookingCreateManyStudentInput | BookingCreateManyStudentInput[]
+    skipDuplicates?: boolean
   }
 
   export type MentorProfileCreateWithoutUserInput = {
@@ -10624,12 +11214,23 @@ export namespace Prisma {
     fullName: string
     age: number
     contactNumber: string
-    expertise: string
-    experience: number
-    bio: string
-    hourlyRate: number
+    expertise?: string | null
+    experience?: number | null
+    bio?: string | null
+    hourlyRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    currentLocation: string
+    email: string
+    githubPortfolio?: string | null
+    linkedinProfile: string
+    preferredLanguage: string
+    preferredLevels: JsonNullValueInput | InputJsonValue
+    professionalRole: string
+    profilePictureUrl?: string | null
+    shortBio: string
+    subjects: JsonNullValueInput | InputJsonValue
+    teachingExperience: string
   }
 
   export type MentorProfileUncheckedCreateWithoutUserInput = {
@@ -10637,12 +11238,23 @@ export namespace Prisma {
     fullName: string
     age: number
     contactNumber: string
-    expertise: string
-    experience: number
-    bio: string
-    hourlyRate: number
+    expertise?: string | null
+    experience?: number | null
+    bio?: string | null
+    hourlyRate?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    currentLocation: string
+    email: string
+    githubPortfolio?: string | null
+    linkedinProfile: string
+    preferredLanguage: string
+    preferredLevels: JsonNullValueInput | InputJsonValue
+    professionalRole: string
+    profilePictureUrl?: string | null
+    shortBio: string
+    subjects: JsonNullValueInput | InputJsonValue
+    teachingExperience: string
   }
 
   export type MentorProfileCreateOrConnectWithoutUserInput = {
@@ -10689,31 +11301,168 @@ export namespace Prisma {
 
   export type SessionCreateManyMentorInputEnvelope = {
     data: SessionCreateManyMentorInput | SessionCreateManyMentorInput[]
+    skipDuplicates?: boolean
   }
 
-  export type BookingCreateWithoutStudentInput = {
+  export type StudentProfileCreateWithoutUserInput = {
     id?: string
-    status?: $Enums.BookingStatus
+    fullName: string
+    age: number
+    contactNumber: string
+    currentEducationLevel: $Enums.EducationLevel
+    school: string
+    subjectsOfInterest: string
+    currentYear: number
+    skillLevels: JsonNullValueInput | InputJsonValue
+    preferredLearningStyle: $Enums.LearningStyle
+    learningDisabilities?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    session: SessionCreateNestedOneWithoutBookingsInput
   }
 
-  export type BookingUncheckedCreateWithoutStudentInput = {
+  export type StudentProfileUncheckedCreateWithoutUserInput = {
     id?: string
-    sessionId: string
-    status?: $Enums.BookingStatus
+    fullName: string
+    age: number
+    contactNumber: string
+    currentEducationLevel: $Enums.EducationLevel
+    school: string
+    subjectsOfInterest: string
+    currentYear: number
+    skillLevels: JsonNullValueInput | InputJsonValue
+    preferredLearningStyle: $Enums.LearningStyle
+    learningDisabilities?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type BookingCreateOrConnectWithoutStudentInput = {
+  export type StudentProfileCreateOrConnectWithoutUserInput = {
+    where: StudentProfileWhereUniqueInput
+    create: XOR<StudentProfileCreateWithoutUserInput, StudentProfileUncheckedCreateWithoutUserInput>
+  }
+
+  export type BookingUpsertWithWhereUniqueWithoutStudentInput = {
     where: BookingWhereUniqueInput
+    update: XOR<BookingUpdateWithoutStudentInput, BookingUncheckedUpdateWithoutStudentInput>
     create: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput>
   }
 
-  export type BookingCreateManyStudentInputEnvelope = {
-    data: BookingCreateManyStudentInput | BookingCreateManyStudentInput[]
+  export type BookingUpdateWithWhereUniqueWithoutStudentInput = {
+    where: BookingWhereUniqueInput
+    data: XOR<BookingUpdateWithoutStudentInput, BookingUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type BookingUpdateManyWithWhereWithoutStudentInput = {
+    where: BookingScalarWhereInput
+    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutStudentInput>
+  }
+
+  export type BookingScalarWhereInput = {
+    AND?: BookingScalarWhereInput | BookingScalarWhereInput[]
+    OR?: BookingScalarWhereInput[]
+    NOT?: BookingScalarWhereInput | BookingScalarWhereInput[]
+    id?: StringFilter<"Booking"> | string
+    sessionId?: StringFilter<"Booking"> | string
+    studentId?: StringFilter<"Booking"> | string
+    status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
+    createdAt?: DateTimeFilter<"Booking"> | Date | string
+    updatedAt?: DateTimeFilter<"Booking"> | Date | string
+    bookedDate?: StringNullableFilter<"Booking"> | string | null
+    bookedTime?: StringNullableFilter<"Booking"> | string | null
+  }
+
+  export type MentorProfileUpsertWithoutUserInput = {
+    update: XOR<MentorProfileUpdateWithoutUserInput, MentorProfileUncheckedUpdateWithoutUserInput>
+    create: XOR<MentorProfileCreateWithoutUserInput, MentorProfileUncheckedCreateWithoutUserInput>
+    where?: MentorProfileWhereInput
+  }
+
+  export type MentorProfileUpdateToOneWithWhereWithoutUserInput = {
+    where?: MentorProfileWhereInput
+    data: XOR<MentorProfileUpdateWithoutUserInput, MentorProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MentorProfileUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    expertise?: NullableStringFieldUpdateOperationsInput | string | null
+    experience?: NullableIntFieldUpdateOperationsInput | number | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hourlyRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentLocation?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    githubPortfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinProfile?: StringFieldUpdateOperationsInput | string
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
+    preferredLevels?: JsonNullValueInput | InputJsonValue
+    professionalRole?: StringFieldUpdateOperationsInput | string
+    profilePictureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shortBio?: StringFieldUpdateOperationsInput | string
+    subjects?: JsonNullValueInput | InputJsonValue
+    teachingExperience?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MentorProfileUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    age?: IntFieldUpdateOperationsInput | number
+    contactNumber?: StringFieldUpdateOperationsInput | string
+    expertise?: NullableStringFieldUpdateOperationsInput | string | null
+    experience?: NullableIntFieldUpdateOperationsInput | number | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    hourlyRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentLocation?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    githubPortfolio?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinProfile?: StringFieldUpdateOperationsInput | string
+    preferredLanguage?: StringFieldUpdateOperationsInput | string
+    preferredLevels?: JsonNullValueInput | InputJsonValue
+    professionalRole?: StringFieldUpdateOperationsInput | string
+    profilePictureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shortBio?: StringFieldUpdateOperationsInput | string
+    subjects?: JsonNullValueInput | InputJsonValue
+    teachingExperience?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SessionUpsertWithWhereUniqueWithoutMentorInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutMentorInput, SessionUncheckedUpdateWithoutMentorInput>
+    create: XOR<SessionCreateWithoutMentorInput, SessionUncheckedCreateWithoutMentorInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutMentorInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutMentorInput, SessionUncheckedUpdateWithoutMentorInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutMentorInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutMentorInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    mentorId?: StringFilter<"Session"> | string
+    title?: StringFilter<"Session"> | string
+    description?: StringFilter<"Session"> | string
+    subject?: StringFilter<"Session"> | string
+    duration?: IntFilter<"Session"> | number
+    price?: FloatFilter<"Session"> | number
+    maxStudents?: IntFilter<"Session"> | number
+    date?: DateTimeFilter<"Session"> | Date | string
+    time?: StringFilter<"Session"> | string
+    isActive?: BoolFilter<"Session"> | boolean
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    updatedAt?: DateTimeFilter<"Session"> | Date | string
   }
 
   export type StudentProfileUpsertWithoutUserInput = {
@@ -10759,106 +11508,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MentorProfileUpsertWithoutUserInput = {
-    update: XOR<MentorProfileUpdateWithoutUserInput, MentorProfileUncheckedUpdateWithoutUserInput>
-    create: XOR<MentorProfileCreateWithoutUserInput, MentorProfileUncheckedCreateWithoutUserInput>
-    where?: MentorProfileWhereInput
-  }
-
-  export type MentorProfileUpdateToOneWithWhereWithoutUserInput = {
-    where?: MentorProfileWhereInput
-    data: XOR<MentorProfileUpdateWithoutUserInput, MentorProfileUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MentorProfileUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    expertise?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    bio?: StringFieldUpdateOperationsInput | string
-    hourlyRate?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MentorProfileUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    age?: IntFieldUpdateOperationsInput | number
-    contactNumber?: StringFieldUpdateOperationsInput | string
-    expertise?: StringFieldUpdateOperationsInput | string
-    experience?: IntFieldUpdateOperationsInput | number
-    bio?: StringFieldUpdateOperationsInput | string
-    hourlyRate?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUpsertWithWhereUniqueWithoutMentorInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutMentorInput, SessionUncheckedUpdateWithoutMentorInput>
-    create: XOR<SessionCreateWithoutMentorInput, SessionUncheckedCreateWithoutMentorInput>
-  }
-
-  export type SessionUpdateWithWhereUniqueWithoutMentorInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutMentorInput, SessionUncheckedUpdateWithoutMentorInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutMentorInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutMentorInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    mentorId?: StringFilter<"Session"> | string
-    title?: StringFilter<"Session"> | string
-    description?: StringFilter<"Session"> | string
-    subject?: StringFilter<"Session"> | string
-    duration?: IntFilter<"Session"> | number
-    price?: FloatFilter<"Session"> | number
-    maxStudents?: IntFilter<"Session"> | number
-    date?: DateTimeFilter<"Session"> | Date | string
-    time?: StringFilter<"Session"> | string
-    isActive?: BoolFilter<"Session"> | boolean
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    updatedAt?: DateTimeFilter<"Session"> | Date | string
-  }
-
-  export type BookingUpsertWithWhereUniqueWithoutStudentInput = {
-    where: BookingWhereUniqueInput
-    update: XOR<BookingUpdateWithoutStudentInput, BookingUncheckedUpdateWithoutStudentInput>
-    create: XOR<BookingCreateWithoutStudentInput, BookingUncheckedCreateWithoutStudentInput>
-  }
-
-  export type BookingUpdateWithWhereUniqueWithoutStudentInput = {
-    where: BookingWhereUniqueInput
-    data: XOR<BookingUpdateWithoutStudentInput, BookingUncheckedUpdateWithoutStudentInput>
-  }
-
-  export type BookingUpdateManyWithWhereWithoutStudentInput = {
-    where: BookingScalarWhereInput
-    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutStudentInput>
-  }
-
-  export type BookingScalarWhereInput = {
-    AND?: BookingScalarWhereInput | BookingScalarWhereInput[]
-    OR?: BookingScalarWhereInput[]
-    NOT?: BookingScalarWhereInput | BookingScalarWhereInput[]
-    id?: StringFilter<"Booking"> | string
-    sessionId?: StringFilter<"Booking"> | string
-    studentId?: StringFilter<"Booking"> | string
-    status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
-    createdAt?: DateTimeFilter<"Booking"> | Date | string
-    updatedAt?: DateTimeFilter<"Booking"> | Date | string
-  }
-
   export type UserCreateWithoutStudentProfileInput = {
     id?: string
     email: string
@@ -10866,9 +11515,10 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
+    hasProfile?: boolean
+    bookedSessions?: BookingCreateNestedManyWithoutStudentInput
     mentorProfile?: MentorProfileCreateNestedOneWithoutUserInput
     createdSessions?: SessionCreateNestedManyWithoutMentorInput
-    bookedSessions?: BookingCreateNestedManyWithoutStudentInput
   }
 
   export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -10878,9 +11528,10 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
+    hasProfile?: boolean
+    bookedSessions?: BookingUncheckedCreateNestedManyWithoutStudentInput
     mentorProfile?: MentorProfileUncheckedCreateNestedOneWithoutUserInput
     createdSessions?: SessionUncheckedCreateNestedManyWithoutMentorInput
-    bookedSessions?: BookingUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -10906,9 +11557,10 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
+    bookedSessions?: BookingUpdateManyWithoutStudentNestedInput
     mentorProfile?: MentorProfileUpdateOneWithoutUserNestedInput
     createdSessions?: SessionUpdateManyWithoutMentorNestedInput
-    bookedSessions?: BookingUpdateManyWithoutStudentNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -10918,9 +11570,10 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
+    bookedSessions?: BookingUncheckedUpdateManyWithoutStudentNestedInput
     mentorProfile?: MentorProfileUncheckedUpdateOneWithoutUserNestedInput
     createdSessions?: SessionUncheckedUpdateManyWithoutMentorNestedInput
-    bookedSessions?: BookingUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type UserCreateWithoutMentorProfileInput = {
@@ -10930,9 +11583,10 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
-    createdSessions?: SessionCreateNestedManyWithoutMentorInput
+    hasProfile?: boolean
     bookedSessions?: BookingCreateNestedManyWithoutStudentInput
+    createdSessions?: SessionCreateNestedManyWithoutMentorInput
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentorProfileInput = {
@@ -10942,9 +11596,10 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
-    createdSessions?: SessionUncheckedCreateNestedManyWithoutMentorInput
+    hasProfile?: boolean
     bookedSessions?: BookingUncheckedCreateNestedManyWithoutStudentInput
+    createdSessions?: SessionUncheckedCreateNestedManyWithoutMentorInput
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentorProfileInput = {
@@ -10970,9 +11625,10 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
-    createdSessions?: SessionUpdateManyWithoutMentorNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
     bookedSessions?: BookingUpdateManyWithoutStudentNestedInput
+    createdSessions?: SessionUpdateManyWithoutMentorNestedInput
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentorProfileInput = {
@@ -10982,38 +11638,10 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-    createdSessions?: SessionUncheckedUpdateManyWithoutMentorNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
     bookedSessions?: BookingUncheckedUpdateManyWithoutStudentNestedInput
-  }
-
-  export type UserCreateWithoutCreatedSessionsInput = {
-    id?: string
-    email: string
-    password: string
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
-    mentorProfile?: MentorProfileCreateNestedOneWithoutUserInput
-    bookedSessions?: BookingCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserUncheckedCreateWithoutCreatedSessionsInput = {
-    id?: string
-    email: string
-    password: string
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
-    mentorProfile?: MentorProfileUncheckedCreateNestedOneWithoutUserInput
-    bookedSessions?: BookingUncheckedCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserCreateOrConnectWithoutCreatedSessionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCreatedSessionsInput, UserUncheckedCreateWithoutCreatedSessionsInput>
+    createdSessions?: SessionUncheckedUpdateManyWithoutMentorNestedInput
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type BookingCreateWithoutSessionInput = {
@@ -11021,6 +11649,8 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
     student: UserCreateNestedOneWithoutBookedSessionsInput
   }
 
@@ -11030,6 +11660,8 @@ export namespace Prisma {
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
   }
 
   export type BookingCreateOrConnectWithoutSessionInput = {
@@ -11039,6 +11671,54 @@ export namespace Prisma {
 
   export type BookingCreateManySessionInputEnvelope = {
     data: BookingCreateManySessionInput | BookingCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutCreatedSessionsInput = {
+    id?: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hasProfile?: boolean
+    bookedSessions?: BookingCreateNestedManyWithoutStudentInput
+    mentorProfile?: MentorProfileCreateNestedOneWithoutUserInput
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedSessionsInput = {
+    id?: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hasProfile?: boolean
+    bookedSessions?: BookingUncheckedCreateNestedManyWithoutStudentInput
+    mentorProfile?: MentorProfileUncheckedCreateNestedOneWithoutUserInput
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedSessionsInput, UserUncheckedCreateWithoutCreatedSessionsInput>
+  }
+
+  export type BookingUpsertWithWhereUniqueWithoutSessionInput = {
+    where: BookingWhereUniqueInput
+    update: XOR<BookingUpdateWithoutSessionInput, BookingUncheckedUpdateWithoutSessionInput>
+    create: XOR<BookingCreateWithoutSessionInput, BookingUncheckedCreateWithoutSessionInput>
+  }
+
+  export type BookingUpdateWithWhereUniqueWithoutSessionInput = {
+    where: BookingWhereUniqueInput
+    data: XOR<BookingUpdateWithoutSessionInput, BookingUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type BookingUpdateManyWithWhereWithoutSessionInput = {
+    where: BookingScalarWhereInput
+    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutSessionInput>
   }
 
   export type UserUpsertWithoutCreatedSessionsInput = {
@@ -11059,9 +11739,10 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
-    mentorProfile?: MentorProfileUpdateOneWithoutUserNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
     bookedSessions?: BookingUpdateManyWithoutStudentNestedInput
+    mentorProfile?: MentorProfileUpdateOneWithoutUserNestedInput
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedSessionsInput = {
@@ -11071,25 +11752,10 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
-    mentorProfile?: MentorProfileUncheckedUpdateOneWithoutUserNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
     bookedSessions?: BookingUncheckedUpdateManyWithoutStudentNestedInput
-  }
-
-  export type BookingUpsertWithWhereUniqueWithoutSessionInput = {
-    where: BookingWhereUniqueInput
-    update: XOR<BookingUpdateWithoutSessionInput, BookingUncheckedUpdateWithoutSessionInput>
-    create: XOR<BookingCreateWithoutSessionInput, BookingUncheckedCreateWithoutSessionInput>
-  }
-
-  export type BookingUpdateWithWhereUniqueWithoutSessionInput = {
-    where: BookingWhereUniqueInput
-    data: XOR<BookingUpdateWithoutSessionInput, BookingUncheckedUpdateWithoutSessionInput>
-  }
-
-  export type BookingUpdateManyWithWhereWithoutSessionInput = {
-    where: BookingScalarWhereInput
-    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutSessionInput>
+    mentorProfile?: MentorProfileUncheckedUpdateOneWithoutUserNestedInput
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type SessionCreateWithoutBookingsInput = {
@@ -11136,9 +11802,10 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
+    hasProfile?: boolean
     mentorProfile?: MentorProfileCreateNestedOneWithoutUserInput
     createdSessions?: SessionCreateNestedManyWithoutMentorInput
+    studentProfile?: StudentProfileCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBookedSessionsInput = {
@@ -11148,9 +11815,10 @@ export namespace Prisma {
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
+    hasProfile?: boolean
     mentorProfile?: MentorProfileUncheckedCreateNestedOneWithoutUserInput
     createdSessions?: SessionUncheckedCreateNestedManyWithoutMentorInput
+    studentProfile?: StudentProfileUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBookedSessionsInput = {
@@ -11219,9 +11887,10 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
     mentorProfile?: MentorProfileUpdateOneWithoutUserNestedInput
     createdSessions?: SessionUpdateManyWithoutMentorNestedInput
+    studentProfile?: StudentProfileUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBookedSessionsInput = {
@@ -11231,9 +11900,20 @@ export namespace Prisma {
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+    hasProfile?: BoolFieldUpdateOperationsInput | boolean
     mentorProfile?: MentorProfileUncheckedUpdateOneWithoutUserNestedInput
     createdSessions?: SessionUncheckedUpdateManyWithoutMentorNestedInput
+    studentProfile?: StudentProfileUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type BookingCreateManyStudentInput = {
+    id?: string
+    sessionId: string
+    status?: $Enums.BookingStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
   }
 
   export type SessionCreateManyMentorInput = {
@@ -11251,12 +11931,34 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type BookingCreateManyStudentInput = {
-    id?: string
-    sessionId: string
-    status?: $Enums.BookingStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type BookingUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+    session?: SessionUpdateOneRequiredWithoutBookingsNestedInput
+  }
+
+  export type BookingUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type BookingUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionUpdateWithoutMentorInput = {
@@ -11306,36 +12008,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BookingUpdateWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    session?: SessionUpdateOneRequiredWithoutBookingsNestedInput
-  }
-
-  export type BookingUncheckedUpdateWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BookingUncheckedUpdateManyWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type BookingCreateManySessionInput = {
     id?: string
     studentId: string
     status?: $Enums.BookingStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    bookedDate?: string | null
+    bookedTime?: string | null
   }
 
   export type BookingUpdateWithoutSessionInput = {
@@ -11343,6 +12023,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
     student?: UserUpdateOneRequiredWithoutBookedSessionsNestedInput
   }
 
@@ -11352,6 +12034,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingUncheckedUpdateManyWithoutSessionInput = {
@@ -11360,6 +12044,8 @@ export namespace Prisma {
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookedDate?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedTime?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

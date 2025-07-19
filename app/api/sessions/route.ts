@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Transform the data to include mentor name
+    // Transform the data to include mentor name and language
     const transformedSessions = sessions.map(session => ({
       id: session.id,
       title: session.title,
@@ -55,6 +55,7 @@ export async function GET(request: NextRequest) {
       time: session.time,
       mentor: {
         fullName: session.mentor.mentorProfile?.fullName || 'Unknown Mentor',
+        language: session.mentor.mentorProfile?.preferredLanguage || 'English',
       },
     }));
 

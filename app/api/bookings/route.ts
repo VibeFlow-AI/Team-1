@@ -5,6 +5,8 @@ import { z } from 'zod';
 
 const bookSessionSchema = z.object({
   sessionId: z.string(),
+  bookedDate: z.string(),
+  bookedTime: z.string(),
 });
 
 export async function GET(request: NextRequest) {
@@ -53,6 +55,8 @@ export async function GET(request: NextRequest) {
     const transformedBookings = bookings.map(booking => ({
       id: booking.id,
       status: booking.status,
+      bookedDate: booking.bookedDate,
+      bookedTime: booking.bookedTime,
       session: {
         id: booking.session.id,
         title: booking.session.title,
@@ -64,6 +68,7 @@ export async function GET(request: NextRequest) {
         time: booking.session.time,
         mentor: {
           fullName: booking.session.mentor.mentorProfile?.fullName || 'Unknown Mentor',
+          language: booking.session.mentor.mentorProfile?.preferredLanguage || 'English',
         },
       },
     }));
@@ -100,7 +105,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { sessionId } = bookSessionSchema.parse(body);
+    const { sessionId, bookedDate, bookedTime } = bookSessionSchema.parse(body);
 
     // Check if session exists and is active
     const session = await prisma.session.findUnique({
@@ -152,6 +157,8 @@ export async function POST(request: NextRequest) {
         sessionId,
         studentId: payload.userId,
         status: 'PENDING',
+        bookedDate,
+        bookedTime,
       },
     });
 

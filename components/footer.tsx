@@ -8,9 +8,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">M</span>
-              </div>
+              <img src="/img.jpg" alt="Edu Vibe Logo" className="w-8 h-8 object-contain rounded-lg" />
               <span className="ml-2 text-xl font-bold">Edu Vibe</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">

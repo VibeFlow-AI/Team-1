@@ -1,59 +1,131 @@
+'use client';
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { BookOpenIcon } from "@heroicons/react/24/outline";
 
 export default function HeroSection() {
+  const demoImages = [
+    "/gallery/personalized-learning.png",
+    "/gallery/real-mentors.png",
+    "/gallery/growth-career.png",
+    "/gallery/insights-support.png",
+    "/gallery/personalized-learning.png",
+    "/gallery/real-mentors.png",
+  ];
+
+  // We'll pick 2 images per column, cycling through demoImages
+  const imagesPerColumn = 2;
+
+  const [startOffsets, setStartOffsets] = useState<number[] | null>(null);
+
+  useEffect(() => {
+    // Random start offset between 0 and height of one pill (say 360px)
+    const offsets = Array(3).fill(0).map(() => Math.random() * 360);
+    setStartOffsets(offsets);
+  }, []);
+
+  if (!startOffsets) return null; // wait for client render
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="max-w-4xl mx-auto">
-          {/* Main headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Find Your Perfect
-            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Mentor Today
-            </span>
+    <section id="home" className="relative bg-white overflow-hidden py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 items-start gap-8">
+        {/* Left text column */}
+        <div className="md:col-span-7 text-left">
+          <h1 className="text-5xl font-normal text-black mb-12 leading-snug">
+            Empowering Students
+            <br />
+            with Personalized
+            <br />
+            Mentorship
+            <BookOpenIcon className="w-12 h-12 inline-block align-text-bottom ml-2 text-black" />
           </h1>
-
-          {/* Subtext */}
-          <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Connect with experienced mentors who can guide you through your journey. 
-            Whether you're starting a career, learning new skills, or seeking personal growth, 
-            we have the right mentor for you.
+          <p className="text-xl text-black mt-8 mb-8 max-w-lg">
+            EduVibe connects students with experienced mentors to guide them through their academic journey.
           </p>
+          <Button
+            size="lg"
+            className="bg-black text-white px-6 py-3 text-lg sm:text-xl font-semibold rounded-lg"
+          >
+            Get Started
+          </Button>
+        </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-black hover:bg-gray-800 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-              Get Started Now
-            </Button>
-            <Button variant="outline" size="lg" className="px-8 py-4 text-lg font-semibold border-2 border-gray-300 hover:border-blue-600 hover:text-blue-600 transition-all duration-300">
-              Learn More
-            </Button>
-          </div>
+        {/* Right: Animated Image Columns */}
+        <div className="md:col-span-5 flex justify-center space-x-4">
+          {Array(3).fill(0).map((_, colIndex) => {
+            const columnImages = demoImages.slice(
+              (colIndex * imagesPerColumn) % demoImages.length,
+              ((colIndex + 1) * imagesPerColumn) % demoImages.length || demoImages.length
+            );
 
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">500+</div>
-              <div className="text-gray-600">Expert Mentors</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">10K+</div>
-              <div className="text-gray-600">Successful Sessions</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">95%</div>
-              <div className="text-gray-600">Satisfaction Rate</div>
-            </div>
-          </div>
+            return (
+              <div key={colIndex} className="relative w-20 h-[360px] overflow-hidden">
+                <div
+                  className="absolute animate-slide-vertical-down space-y-8"
+                  style={{
+                    top: `-${startOffsets[colIndex]}px`,
+                    animationDelay: `${colIndex * 2}s`,
+                  }}
+                >
+                  {columnImages.map((src, i) => (
+                    <div
+                      key={i}
+                      className="w-20 h-72 bg-white overflow-hidden rounded-full border-4 border-gray-300 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 transform-gpu"
+                      style={{
+                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                      }}
+                    >
+                      <Image
+                        src={src}
+                        alt={`Demo ${colIndex * imagesPerColumn + i + 1}`}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        className="rounded-full"
+                      />
+                    </div>
+                  ))}
+                  {/* Duplicate images for infinite seamless scroll */}
+                  {columnImages.map((src, i) => (
+                    <div
+                      key={`dup-${i}`}
+                      className="w-20 h-72 bg-white overflow-hidden rounded-full border-4 border-gray-300 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 transform-gpu"
+                      style={{
+                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                      }}
+                    >
+                      <Image
+                        src={src}
+                        alt={`Demo duplicate ${colIndex * imagesPerColumn + i + 1}`}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        className="rounded-full"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
+
+      {/* bottom fade overlay */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+
+      <style jsx global>{`
+        @keyframes slideVerticalDown {
+          0% {
+            transform: translateY(0);
+          }
+          100% {
+            transform: translateY(360px); /* height of one pill * 2 images + margin */
+          }
+        }
+        .animate-slide-vertical-down {
+          animation: slideVerticalDown 8s linear infinite;
+        }
+      `}</style>
     </section>
   );
-} 
+}

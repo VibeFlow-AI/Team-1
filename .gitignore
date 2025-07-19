@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+
+# Next.js build output
+.next/
+
+# Prisma generated client and database files
+node_modules/.prisma/client/
+prisma/dev.db # Or your specific database file if not dev.db
+prisma/migrations/*.db # If you're using SQLite for migrations
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Other common ignores
+coverage/
+dist/
+build/
